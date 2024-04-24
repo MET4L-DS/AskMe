@@ -2,22 +2,14 @@
 export default {
     content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
     theme: {
-        extend: {},
-        screens: {
-            sm: "640px",
-            // => @media (min-width: 640px) { ... }
-
-            md: "768px",
-            // => @media (min-width: 768px) { ... }
-
-            lg: "1024px",
-            // => @media (min-width: 1024px) { ... }
-
-            xl: "1280px",
-            // => @media (min-width: 1280px) { ... }
-
-            "2xl": "1536px",
-            // => @media (min-width: 1536px) { ... }
+        extend: {
+            colors: {
+                customGreen: "hsl(165, 83%, 35%)",
+                customLightGreen: "hsl(166, 39%, 89%)",
+                customAccentYellow: "hsl(40, 99%, 66%)",
+                customAccentMaroon: "hsl(360, 83%, 70%)",
+                customNeutral: "hsl(0, 0%, 96%)",
+            },
         },
     },
     plugins: [],
