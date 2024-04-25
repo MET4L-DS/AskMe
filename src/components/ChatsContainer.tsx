@@ -1,8 +1,15 @@
 import { memo } from "react";
 import { Chat } from "./";
 
-const ChatsContainer = ({ history, isLoading }) => {
-    const textFormatter = (text) => {
+import { HistoryType } from "../types";
+
+type ChatsContainerProps = {
+    history: HistoryType;
+    isLoading: boolean;
+};
+
+const ChatsContainer = ({ history, isLoading }: ChatsContainerProps) => {
+    const textFormatter = (text: string) => {
         return text.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
     };
     return (

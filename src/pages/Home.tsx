@@ -4,14 +4,9 @@ import { prevHistory } from "../prevHistory";
 
 import { ChatsContainer, ChatBar } from "../components";
 
-const Home = () => {
-    type inlineImage = {
-        inlineData: {
-            data: string;
-            mimeType: string;
-        };
-    };
+import { InlineImageType } from "../types";
 
+const Home = () => {
     const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
     const genAI = new GoogleGenerativeAI(API_KEY);
 
@@ -42,7 +37,7 @@ const Home = () => {
 
     const textAndImagePromptRun = async () => {
         const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
-        const images = [inlineImageData] as [inlineImage];
+        const images = [inlineImageData] as [InlineImageType];
 
         setIsLoading(true);
         const result = await model.generateContent([prompt, ...images]);

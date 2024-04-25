@@ -1,5 +1,14 @@
-import { FaImage, FaRegTrashCan } from "react-icons/fa6";
+import { FaRegTrashCan } from "react-icons/fa6";
 import { BiImageAdd } from "react-icons/bi";
+
+type CharBarProps = {
+    prompt: string;
+    setPrompt: (prompt: string) => void;
+    handleInput: () => void;
+    handleFileInput: (file: File) => void;
+    image: string;
+    setImage: (image: string) => void;
+};
 
 const ChatBar = ({
     prompt,
@@ -8,7 +17,7 @@ const ChatBar = ({
     handleFileInput,
     image,
     setImage,
-}) => {
+}: CharBarProps) => {
     return (
         <div className="sticky bottom-4 col-[2/-2] grid gap-4 px-8">
             {image && (
@@ -53,8 +62,10 @@ const ChatBar = ({
                     id="image"
                     accept="image/*"
                     onChange={(e) => {
-                        console.log(e.target.files[0]);
-                        handleFileInput(e.target.files[0]);
+                        if (e.target.files && e.target.files[0]) {
+                            console.log(e.target.files[0]);
+                            handleFileInput(e.target.files[0]);
+                        }
                     }}
                     className=" hidden"
                 />
