@@ -13,7 +13,7 @@ const ChatsContainer = ({ history, isLoading }: ChatsContainerProps) => {
         return text.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
     };
     return (
-        <div className="col-[2/-2] flex flex-col gap-8 rounded px-8 py-4">
+        <div className="flex flex-col gap-8 rounded py-4">
             {history.map((item, index) => {
                 const formattedText = textFormatter(
                     item.parts.map((part) => part.text).join("\n"),

@@ -2,9 +2,12 @@ import { useState } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { prevHistory } from "../prevHistory";
 
-import { ChatsContainer, ChatBar } from "../components";
+import { ChatsContainer, ChatBar, IconButton } from "../components";
 
 import { InlineImageType } from "../types";
+
+import { FaPlus, FaMagnifyingGlass } from "react-icons/fa6";
+import { HiDotsHorizontal } from "react-icons/hi";
 
 const Home = () => {
     const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
@@ -106,15 +109,57 @@ const Home = () => {
 
     return (
         <>
-            <ChatsContainer history={history} isLoading={isLoading} />
-            <ChatBar
-                prompt={prompt}
-                setPrompt={setPrompt}
-                handleInput={handleInput}
-                handleFileInput={handleFileInput}
-                image={image}
-                setImage={setImage}
-            />
+            <aside className="col-[1/3]">
+                <div className="flex items-center justify-between gap-4 p-4">
+                    <h1 className="mr-auto text-3xl font-semibold">My Chats</h1>
+                    <IconButton color="white" bgColor="var(--customGreen)">
+                        <FaPlus />
+                    </IconButton>
+                    <IconButton
+                        color="var(--customGray)"
+                        bgColor="var(--customNeutral)"
+                    >
+                        <HiDotsHorizontal />
+                    </IconButton>
+
+                    {/* <IconButton className=" bg-customGreen text-white">
+                        <FaPlus />
+                    </IconButton>
+                    <IconButton className=" bg-customNeutral text-slate-400">
+                        <HiDotsHorizontal />
+                    </IconButton> */}
+                </div>
+            </aside>
+            <main className="col-[3/-1] flex h-svh flex-col pb-4">
+                <div className="flex items-center justify-between gap-4 p-4 ">
+                    <h2 className=" mr-auto text-3xl font-semibold">
+                        Warning Messages Sample
+                    </h2>
+                    <IconButton
+                        color="var(--customGray)"
+                        bgColor="var(--customNeutral)"
+                    >
+                        <FaMagnifyingGlass />
+                    </IconButton>
+                    <IconButton
+                        color="var(--customGray)"
+                        bgColor="var(--customNeutral)"
+                    >
+                        <HiDotsHorizontal />
+                    </IconButton>
+                </div>
+                <div className="col-[1/-1] flex-grow overflow-y-scroll rounded-lg bg-customNeutral px-32 py-4 text-sm">
+                    <ChatsContainer history={history} isLoading={isLoading} />
+                    <ChatBar
+                        prompt={prompt}
+                        setPrompt={setPrompt}
+                        handleInput={handleInput}
+                        handleFileInput={handleFileInput}
+                        image={image}
+                        setImage={setImage}
+                    />
+                </div>
+            </main>
         </>
     );
 };

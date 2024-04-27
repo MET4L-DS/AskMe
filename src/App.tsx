@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { SharedLayout, Home } from "./pages";
+import { SharedLayout, Home, SignUp, Logout, Login } from "./pages";
 
 const App = () => {
     return (
@@ -7,9 +7,9 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<SharedLayout />}>
                     <Route index element={<Home />} />
-                    {/* <Route path="/signup" element={<SignUp />} /> */}
-                    {/* <Route path="/signout" element={<SignOut />} /> */}
-                    {/* <Route path="/signin" element={<SignIn />} /> */}
+                    <Route path="/signup" element={<SignUp />} />
+                    <Route path="/logout" element={<Logout />} />
+                    <Route path="/login" element={<Login />} />
                 </Route>
             </Routes>
         </BrowserRouter>

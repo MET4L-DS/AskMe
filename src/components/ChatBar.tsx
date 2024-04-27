@@ -19,7 +19,7 @@ const ChatBar = ({
     setImage,
 }: CharBarProps) => {
     return (
-        <div className="sticky bottom-4 col-[2/-2] grid gap-4 px-8">
+        <div className="sticky bottom-4 mt-20 grid gap-4">
             {image && (
                 <div className="relative w-fit">
                     <img
