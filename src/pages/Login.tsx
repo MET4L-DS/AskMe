@@ -1,25 +1,41 @@
 import { useState } from "react";
 import { auth } from "../configs/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import { setUser } from "../features/user/userSlice";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
+    const dispatch = useDispatch();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            console.log("User is signed in:", user);
+            const userEmail = user.email;
+            dispatch(setUser({ email: userEmail }));
+        } else {
+            console.log("User is signed out");
+        }
+    });
+
     const handleLogin = async () => {
         try {
-            const user = await signInWithEmailAndPassword(
+            const userCredential = await signInWithEmailAndPassword(
                 auth,
                 email,
                 password,
             );
-            alert("Logged in successfully");
-            console.log(user);
+            const userEmail = userCredential.user.email;
+            console.log("Logged in user email:", userEmail);
+            dispatch(setUser({ email: userEmail }));
+            // ...rest of your code
+            console.log("Current User", auth.currentUser);
         } catch (error) {
-            console.error(error);
+            console.error("Login error:", error);
         }
     };
     return (
-        <div>
+        <div className=" col-span-full grid place-items-center">
             <h2>Login</h2>
             <div>
                 <p>
