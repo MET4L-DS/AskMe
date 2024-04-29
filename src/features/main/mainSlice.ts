@@ -1,9 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { prevHistory } from "../../prevHistory";
 import { HistoryType } from "../../types";
-type MainType = {
+
+export type MainType = {
     history: HistoryType;
 };
+
 const initialState: MainType = {
     history: prevHistory,
 };

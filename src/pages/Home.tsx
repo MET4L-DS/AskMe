@@ -15,16 +15,12 @@ import {
 import { HiDotsHorizontal } from "react-icons/hi";
 
 import { useSelector } from "react-redux";
-import {
-    IoChatbubble,
-    IoCompass,
-    IoLogOut,
-    IoSave,
-    IoSettings,
-} from "react-icons/io5";
+import { IoChatbubble, IoCompass, IoLogOut, IoSettings } from "react-icons/io5";
 
 import { BsHexagonFill } from "react-icons/bs";
 import { MdLightMode } from "react-icons/md";
+
+import { Link } from "react-router-dom";
 
 const Home = () => {
     const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
@@ -164,21 +160,25 @@ const Home = () => {
                             <BsHexagonFill />
                         </IconButton>
                     </div>
-                    <div className="mt-auto flex flex-col gap-4 text-2xl">
-                        <IconButton
-                            color="white"
-                            bgColor="var(--customGreen)"
-                            className=""
-                        >
-                            {user.email?.slice(0, 2).toUpperCase() || "Y"}
-                        </IconButton>
-                        <IconButton
-                            color="var(--customGreen)"
-                            bgColor="white"
-                            className=" "
-                        >
-                            <IoLogOut />
-                        </IconButton>
+                    <div className="mt-auto flex flex-col gap-4 text-xl font-bold">
+                        <Link to="/login">
+                            <IconButton
+                                color="white"
+                                bgColor="var(--customGreen)"
+                                className=""
+                            >
+                                {user.email?.slice(0, 2).toUpperCase() || "Y"}
+                            </IconButton>
+                        </Link>
+                        <Link to="/logout">
+                            <IconButton
+                                color="var(--customGreen)"
+                                bgColor="white"
+                                className=" "
+                            >
+                                <IoLogOut />
+                            </IconButton>
+                        </Link>
                         <IconButton
                             color="var(--customGreen)"
                             bgColor="white"

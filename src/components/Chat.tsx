@@ -2,11 +2,8 @@ import React, { memo } from "react";
 import { FaPenFancy } from "react-icons/fa";
 import { IconButton } from "./";
 import { useSelector } from "react-redux";
-import { UserType } from "../features/user/userSlice";
 
-type RootType = {
-    user: UserType;
-};
+import { RootType } from "../store";
 
 type ChatProps = {
     children: React.ReactNode;

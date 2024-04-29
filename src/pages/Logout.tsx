@@ -1,12 +1,17 @@
 import { signOut } from "firebase/auth";
 import { auth } from "../configs/firebase";
+import { setUser } from "../features/user/userSlice";
+import { useDispatch } from "react-redux";
 
 const Logout = () => {
+    const dispatch = useDispatch();
     const handleLogout = async () => {
         try {
             const user = await signOut(auth);
             alert("Logged out successfully");
             console.log(user);
+
+            dispatch(setUser({ email: null }));
         } catch (error) {
             console.error(error);
         }
