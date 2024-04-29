@@ -11,7 +11,7 @@ const Logout = () => {
             alert("Logged out successfully");
             console.log(user);
 
-            dispatch(setUser({ email: null }));
+            dispatch(setUser({ id: null, email: null }));
         } catch (error) {
             console.error(error);
         }

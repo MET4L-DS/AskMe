@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { auth } from "../configs/firebase";
-import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { setUser } from "../features/user/userSlice";
 import { useDispatch } from "react-redux";
 
@@ -8,15 +8,6 @@ const Login = () => {
     const dispatch = useDispatch();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            console.log("User is signed in:", user);
-            const userEmail = user.email;
-            dispatch(setUser({ email: userEmail }));
-        } else {
-            console.log("User is signed out");
-        }
-    });
 
     const handleLogin = async () => {
         try {
@@ -27,7 +18,9 @@ const Login = () => {
             );
             const userEmail = userCredential.user.email;
             console.log("Logged in user email:", userEmail);
-            dispatch(setUser({ email: userEmail }));
+            dispatch(
+                setUser({ id: userCredential.user.uid, email: userEmail }),
+            );
             // ...rest of your code
             console.log("Current User", auth.currentUser);
         } catch (error) {
