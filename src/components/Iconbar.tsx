@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { RootType } from "../store";
 
 const Iconbar = () => {
-    const user = useSelector((state: RootType) => state.user);
+    const { email } = useSelector((state: RootType) => state.user!);
 
     return (
         <div className="flex flex-col border-r border-customLightGreen p-4">
@@ -55,7 +55,7 @@ const Iconbar = () => {
                         bgColor="var(--customGreen)"
                         className=""
                     >
-                        {user?.email?.slice(0, 2).toUpperCase() || "Y"}
+                        {email?.slice(0, 2).toUpperCase() || "Y"}
                     </IconButton>
                 </Link>
                 <Link to="/logout">

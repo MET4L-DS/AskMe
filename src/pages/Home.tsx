@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { prevHistory } from "../prevHistory";
+import { HistoryType } from "../types";
 
 import { ChatsContainer, ChatBar, IconButton, Sidebar } from "../components";
 
@@ -9,11 +10,6 @@ import { InlineImageType } from "../types";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { HiDotsHorizontal } from "react-icons/hi";
 
-import { useSelector } from "react-redux";
-import { db } from "../configs/firebase";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { RootType } from "../store";
-
 const Home = () => {
     const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
     const genAI = new GoogleGenerativeAI(API_KEY);
@@ -21,38 +17,8 @@ const Home = () => {
     const [prompt, setPrompt] = useState("");
     const [image, setImage] = useState("");
     const [inlineImageData, setInlineImageData] = useState({});
-    const [history, setHistory] = useState(prevHistory);
+    const [history, setHistory] = useState<HistoryType>([]);
     const [isLoading, setIsLoading] = useState(false);
-
-    const user = useSelector((state: RootType) => state.user);
-    console.log(user);
-
-    const historyCollectionRef = collection(db, "chat_histories");
-    const getData = async () => {
-        try {
-            const q = query(
-                historyCollectionRef,
-                where("userId", "==", user?.id),
-            );
-            const docSnap = await getDocs(q);
-            if (docSnap) {
-                console.log(
-                    "Document data:",
-                    docSnap.docs.map((doc) => ({
-                        ...doc.data(),
-                        id: doc.id,
-                    })),
-                );
-            } else {
-                // doc.data() will be undefined in this case
-                console.log("No such document!");
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    getData();
 
     const printResponseText = (text: string) => {
         const textArray = text.split(" ");
@@ -144,7 +110,7 @@ const Home = () => {
 
     return (
         <>
-            <Sidebar />
+            <Sidebar setHistory={setHistory} />
             <main className="col-[3/-1] flex h-svh flex-col pb-4">
                 <div className="flex items-center justify-between gap-4 p-4 ">
                     <h2 className=" mr-auto text-3xl font-semibold">

@@ -1,9 +1,11 @@
-type HistoryType = {
-    role: "user" | "model";
-    parts: {
-        text: string;
-    }[];
-}[];
+type HistoryType =
+    | {
+          role: "user" | "model";
+          parts: {
+              text: string;
+          }[];
+      }[]
+    | [];
 
 type InlineImageType = {
     inlineData: {
