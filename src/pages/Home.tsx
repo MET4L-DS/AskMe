@@ -59,13 +59,17 @@ const Home = () => {
         // For text-only input, use the gemini-pro model
         const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
+        console.log(history);
+        const newHistory = [...history];
+
         const chat = model.startChat({
-            history: history,
+            history: newHistory,
         });
+        console.log(chat);
 
         setIsLoading(true);
         const result = await chat.sendMessage(prompt);
-        const response = await result.response;
+        const response = result.response;
         setIsLoading(false);
 
         setHistory((prevHistory) => [
