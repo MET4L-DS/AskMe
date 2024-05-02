@@ -1,20 +1,19 @@
 import { memo } from "react";
 import { Chat } from "./";
 
-import { HistoryType } from "../types";
+import { useSelector } from "react-redux";
+import { RootType } from "../store";
 
-type ChatsContainerProps = {
-    history: HistoryType;
-    isLoading: boolean;
-};
-
-const ChatsContainer = ({ history, isLoading }: ChatsContainerProps) => {
+const ChatsContainer = () => {
+    const { currentChat, isLoading } = useSelector(
+        (state: RootType) => state.chat!,
+    );
     const textFormatter = (text: string) => {
         return text.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
     };
     return (
         <div className="flex flex-col gap-8 rounded py-4">
-            {history.map((item, index) => {
+            {currentChat.map((item, index) => {
                 const formattedText = textFormatter(
                     item.parts.map((part) => part.text).join("\n"),
                 );

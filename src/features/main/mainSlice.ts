@@ -2,23 +2,22 @@ import { createSlice } from "@reduxjs/toolkit";
 import { HistoryType } from "../../types";
 
 export type MainType = {
-    chats: HistoryType[] | [];
+    allChats: HistoryType[][] | [];
 };
 
 const initialState: MainType = {
-    chats: [],
+    allChats: [],
 };
 
 const mainSlice = createSlice({
     name: "main",
     initialState,
     reducers: {
-        setChats: (state, action) => {
-            console.log("setChats", action.payload);
-            state.chats = action.payload.chats;
+        setAllChats: (state, action) => {
+            state.allChats = action.payload.chats;
         },
     },
 });
 
 export default mainSlice.reducer;
-export const { setChats } = mainSlice.actions;
+export const { setAllChats } = mainSlice.actions;

@@ -1,23 +1,57 @@
 import { FaRegTrashCan } from "react-icons/fa6";
 import { BiImageAdd } from "react-icons/bi";
+import { useDispatch, useSelector } from "react-redux";
+import { RootType } from "../store";
+import {
+    setPrompt,
+    setImage,
+    setInlineImageData,
+    appendChat,
+} from "../features/chat/chatSlice";
 
 type CharBarProps = {
-    prompt: string;
-    setPrompt: (prompt: string) => void;
-    handleInput: () => void;
-    handleFileInput: (file: File) => void;
-    image: string;
-    setImage: (image: string) => void;
+    textAndImagePromptRun: () => void;
+    getResponse: () => void;
 };
 
-const ChatBar = ({
-    prompt,
-    setPrompt,
-    handleInput,
-    handleFileInput,
-    image,
-    setImage,
-}: CharBarProps) => {
+const ChatBar = ({ textAndImagePromptRun, getResponse }: CharBarProps) => {
+    const { prompt, image } = useSelector((state: RootType) => state.chat!);
+    const dispatch = useDispatch();
+
+    const handleInput = () => {
+        dispatch(
+            appendChat({ chat: { role: "user", parts: [{ text: prompt }] } }),
+        );
+
+        if (image) console.log("image is set");
+        image ? textAndImagePromptRun() : getResponse();
+
+        dispatch(setPrompt({ prompt: "" }));
+        dispatch(setImage({ image: undefined }));
+        dispatch(setInlineImageData({ data: undefined }));
+    };
+
+    const handleFileInput = (file: File) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+            if (reader.result !== null) {
+                const base64Img = reader.result as string;
+                dispatch(setImage({ image: base64Img }));
+                dispatch(
+                    setInlineImageData({
+                        data: {
+                            inlineData: {
+                                data: base64Img.split(",")[1],
+                                mimeType: file.type,
+                            },
+                        },
+                    }),
+                );
+            }
+        };
+    };
+
     return (
         <div className="sticky bottom-4 mt-20 grid gap-4">
             {image && (
@@ -29,7 +63,7 @@ const ChatBar = ({
                     />
                     <FaRegTrashCan
                         className="absolute right-0 top-0 -translate-y-1/2 translate-x-1/2 cursor-pointer text-red-500"
-                        onClick={() => setImage("")}
+                        onClick={() => dispatch(setImage({ image: undefined }))}
                     />
                 </div>
             )}
@@ -42,7 +76,9 @@ const ChatBar = ({
                         name="input"
                         id="input"
                         value={prompt}
-                        onChange={(e) => setPrompt(e.target.value)}
+                        onChange={(e) =>
+                            dispatch(setPrompt({ prompt: e.target.value }))
+                        }
                         onKeyDown={(e) => {
                             if (!prompt) return;
                             e.key === "Enter" && handleInput();

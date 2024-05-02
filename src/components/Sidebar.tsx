@@ -14,15 +14,15 @@ import { db } from "../configs/firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
 import { RootType } from "../store";
-import { setChats } from "../features/main/mainSlice";
+import { setAllChats } from "../features/main/mainSlice";
+import { setCurrentChat } from "../features/chat/chatSlice";
 import { useEffect, useState } from "react";
 
-const Sidebar = ({ setHistory }: { setHistory: any }) => {
+const Sidebar = () => {
     const { id } = useSelector((state: RootType) => state.user!);
-    const { chats } = useSelector((state: RootType) => state.main!);
-    console.log(id);
+    const { allChats } = useSelector((state: RootType) => state.main!);
     const dispatch = useDispatch();
-    const [cuurentChat, setCurrentChat] = useState<Number | null>(null);
+    const [activeChat, setActiveChat] = useState<Number | null>(null);
 
     const historyCollectionRef = collection(db, "chat_histories");
 
@@ -33,8 +33,7 @@ const Sidebar = ({ setHistory }: { setHistory: any }) => {
             const data = docSnap.docs.map((doc) => doc.data());
             const chatHistory = data.map((data) => data.chats);
             if (docSnap) {
-                console.log("Document data:", chatHistory);
-                dispatch(setChats({ chats: chatHistory }));
+                dispatch(setAllChats({ chats: chatHistory }));
             } else {
                 // doc.data() will be undefined in this case
                 console.log("No such document!");
@@ -70,7 +69,7 @@ const Sidebar = ({ setHistory }: { setHistory: any }) => {
                         type="button"
                     >
                         <IoChatbubble />
-                        <span onClick={() => console.log(chats)}>Chats</span>
+                        <span onClick={() => console.log(allChats)}>Chats</span>
                         <span className=" rounded bg-customLightGreen px-1">
                             24
                         </span>
@@ -110,14 +109,16 @@ const Sidebar = ({ setHistory }: { setHistory: any }) => {
                     </IconButton>
                 </div>
                 <div className=" no-scrollbar flex flex-grow flex-col gap-2 overflow-y-scroll">
-                    {chats?.map((chat, index) => {
+                    {allChats?.map((chat, index) => {
                         return (
                             <div
                                 key={index}
-                                className={`history-item-template grid min-h-20 gap-y-2 ${index === cuurentChat ? "bg-customLightGreen" : ""} rounded-lg py-2 pr-4`}
+                                className={`history-item-template grid min-h-20 gap-y-2 ${index === activeChat ? "bg-customLightGreen" : ""} rounded-lg py-2 pr-4`}
                                 onClick={() => {
-                                    setHistory(chat);
-                                    setCurrentChat(index);
+                                    dispatch(
+                                        setCurrentChat({ currentChat: chat }),
+                                    );
+                                    setActiveChat(index);
                                 }}
                             >
                                 <div className=" col-[1/2] flex items-center justify-center text-sm text-customDark400">
