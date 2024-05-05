@@ -15,25 +15,42 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
 import { RootType } from "../store";
 import { setAllChats } from "../features/main/mainSlice";
-import { setCurrentChat } from "../features/chat/chatSlice";
-import { useEffect, useState } from "react";
+import { setId, setCurrentChat } from "../features/chat/chatSlice";
+import { useEffect } from "react";
 
 const Sidebar = () => {
-    const { id } = useSelector((state: RootType) => state.user!);
+    const { id: userId } = useSelector((state: RootType) => state.user!);
     const { allChats } = useSelector((state: RootType) => state.main!);
+    const { id: currentChatId } = useSelector((state: RootType) => state.chat!);
     const dispatch = useDispatch();
-    const [activeChat, setActiveChat] = useState<Number | null>(null);
 
     const historyCollectionRef = collection(db, "chat_histories");
 
     const getData = async () => {
         try {
-            const q = query(historyCollectionRef, where("userId", "==", id));
+            const q = query(
+                historyCollectionRef,
+                where("userId", "==", userId),
+            );
             const docSnap = await getDocs(q);
-            const data = docSnap.docs.map((doc) => doc.data());
-            const chatHistory = data.map((data) => data.chats);
+            // const data = docSnap.docs.map((doc) => doc.data());
+            // const newVar = docSnap.docs.map((doc) => {
+            //     const chatId = doc.id;
+            //     const chatData = doc.data();
+            //     const chats = chatData.chats;
+            //     return { chatId, chats };
+            // });
+            // console.log(newVar);
+
+            const chatHistory = docSnap.docs.map((doc) => {
+                const chatId = doc.id;
+                const chatData = doc.data();
+                const prevChats = chatData.chats;
+                return { id: chatId, chats: prevChats };
+            });
+
             if (docSnap) {
-                dispatch(setAllChats({ chats: chatHistory }));
+                dispatch(setAllChats({ allChats: chatHistory }));
             } else {
                 // doc.data() will be undefined in this case
                 console.log("No such document!");
@@ -45,7 +62,7 @@ const Sidebar = () => {
 
     useEffect(() => {
         getData();
-    }, [id]);
+    }, [userId]);
 
     return (
         <aside className="col-[1/3] flex">
@@ -53,7 +70,14 @@ const Sidebar = () => {
             <div className=" flex flex-grow flex-col gap-4 px-4">
                 <div className="mt-4 flex justify-between gap-4">
                     <h1 className="mr-auto text-3xl font-semibold">My Chats</h1>
-                    <IconButton color="white" bgColor="var(--customGreen)">
+                    <IconButton
+                        color="white"
+                        bgColor="var(--customGreen)"
+                        onClick={() => {
+                            dispatch(setId({ id: "" }));
+                            dispatch(setCurrentChat({ currentChat: [] }));
+                        }}
+                    >
                         <FaPlus />
                     </IconButton>
                     <IconButton
@@ -109,29 +133,31 @@ const Sidebar = () => {
                     </IconButton>
                 </div>
                 <div className=" no-scrollbar flex flex-grow flex-col gap-2 overflow-y-scroll">
-                    {allChats?.map((chat, index) => {
+                    {allChats?.map((chat) => {
                         return (
                             <div
-                                key={index}
-                                className={`history-item-template grid min-h-20 gap-y-2 ${index === activeChat ? "bg-customLightGreen" : ""} rounded-lg py-2 pr-4`}
+                                key={chat.id}
+                                className={`history-item-template grid min-h-20 gap-y-2 ${chat.id === currentChatId ? "bg-customLightGreen" : ""} rounded-lg py-2 pr-4`}
                                 onClick={() => {
+                                    dispatch(setId({ id: chat.id }));
                                     dispatch(
-                                        setCurrentChat({ currentChat: chat }),
+                                        setCurrentChat({
+                                            currentChat: chat.chats,
+                                        }),
                                     );
-                                    setActiveChat(index);
                                 }}
                             >
                                 <div className=" col-[1/2] flex items-center justify-center text-sm text-customDark400">
                                     <FaPenFancy />
                                 </div>
                                 <h3 className=" col-[2/3] line-clamp-1 font-bold text-customDark400">
-                                    {chat[0].parts[0].text}
+                                    {chat.chats[0].parts[0].text}
                                 </h3>
                                 <span className="col-[3/4] flex items-center justify-end text-xs font-bold text-customGray">
                                     9:34 PM
                                 </span>
                                 <p className="col-[2/-1] line-clamp-3 text-justify text-sm text-customDark200">
-                                    {chat[1].parts[0].text}
+                                    {chat.chats[1].parts[0].text}
                                 </p>
                             </div>
                         );

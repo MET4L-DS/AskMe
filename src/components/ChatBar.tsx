@@ -7,6 +7,7 @@ import {
     setImage,
     setInlineImageData,
     appendChat,
+    setCurrentChat,
 } from "../features/chat/chatSlice";
 
 type CharBarProps = {
@@ -15,14 +16,12 @@ type CharBarProps = {
 };
 
 const ChatBar = ({ textAndImagePromptRun, getResponse }: CharBarProps) => {
-    const { prompt, image } = useSelector((state: RootType) => state.chat!);
+    const { prompt, image, currentChat } = useSelector(
+        (state: RootType) => state.chat!,
+    );
     const dispatch = useDispatch();
 
     const handleInput = () => {
-        dispatch(
-            appendChat({ chat: { role: "user", parts: [{ text: prompt }] } }),
-        );
-
         if (image) console.log("image is set");
         image ? textAndImagePromptRun() : getResponse();
 

@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { RootType } from "../store";
 
 type ChatProps = {
-    children: React.ReactNode;
+    children: string;
     role: "user" | "model";
 };
 
@@ -35,10 +35,10 @@ const Chat = ({ children, role }: ChatProps) => {
                 <pre
                     className={`text-wrap rounded-2xl ${role === "user" ? "bg-white py-4" : " bg-customLightGreen py-8"} w-fit px-10 `}
                     // dangerouslySetInnerHTML={{__html: prevHistoryText,}}
-                    // dangerouslySetInnerHTML={{ __html: children }}
+                    dangerouslySetInnerHTML={{ __html: children }}
                 >
                     {/* {htmlParser(children)} */}
-                    {children}
+                    {/* {children} */}
                 </pre>
             </div>
         </div>

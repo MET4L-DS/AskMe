@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { HistoryType, InlineImageType } from "../../types";
 
 export type ChatType = {
+    id: string;
     currentChat: HistoryType[] | [];
     prompt: string;
     isLoading: boolean;
@@ -10,6 +11,7 @@ export type ChatType = {
 };
 
 const initialState: ChatType = {
+    id: "",
     currentChat: [],
     prompt: "",
     isLoading: false,
@@ -21,12 +23,13 @@ const chatSlice = createSlice({
     name: "chat",
     initialState,
     reducers: {
+        setId(state, action) {
+            state.id = action.payload.id;
+        },
         setPrompt(state, action) {
             state.prompt = action.payload.prompt;
         },
         setCurrentChat(state, action) {
-            console.log("setCurrentChat", action.payload);
-
             state.currentChat = action.payload.currentChat;
         },
         setLastChatText(state, action) {
@@ -53,6 +56,7 @@ const chatSlice = createSlice({
 });
 
 export const {
+    setId,
     setPrompt,
     setCurrentChat,
     setLastChatText,

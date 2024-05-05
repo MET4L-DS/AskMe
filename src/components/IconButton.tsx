@@ -3,23 +3,27 @@ const IconButton = ({
     color = "",
     bgColor = "",
     className = "",
+    onClick = () => {},
 }: {
     children: React.ReactNode;
     color?: string;
     bgColor?: string;
     className?: string;
+    onClick?: () => void;
 }) => {
     // const className = `text-${color} bg-${bgColor}`;
     return (
-        <div
+        <button
+            type="button"
             style={{
                 backgroundColor: bgColor,
                 color: color,
             }}
             className={` grid aspect-square w-10 grid-flow-col items-center justify-center gap-1 rounded-xl ${className}`}
+            onClick={onClick}
         >
             {children}
-        </div>
+        </button>
     );
 };
 export default IconButton;
