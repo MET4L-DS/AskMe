@@ -95,7 +95,7 @@ const Sidebar = () => {
                         <IoChatbubble />
                         <span onClick={() => console.log(allChats)}>Chats</span>
                         <span className=" rounded bg-customLightGreen px-1">
-                            24
+                            {allChats.length}
                         </span>
                     </button>
                     <button

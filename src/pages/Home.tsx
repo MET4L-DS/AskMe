@@ -4,7 +4,7 @@ import { ChatsContainer, ChatBar, IconButton, Sidebar } from "../components";
 
 import { HistoryType, InlineImageType } from "../types";
 
-import { FaMagnifyingGlass } from "react-icons/fa6";
+import { FaMagnifyingGlass, FaTrashCan } from "react-icons/fa6";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -27,10 +27,13 @@ import { updateIndividualChat, setAllChats } from "../features/main/mainSlice";
 import { setUser } from "../features/user/userSlice";
 
 import { onAuthStateChanged } from "firebase/auth";
+import { useState } from "react";
 
 const Home = () => {
     const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
     const genAI = new GoogleGenerativeAI(API_KEY);
+
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const {
         prompt,
@@ -69,6 +72,32 @@ const Home = () => {
         } catch (error) {
             console.log(error);
         }
+    };
+
+    const deleteChatsInFirestore = async () => {
+        console.log("Deleting Chats from Firestore: ", chatId);
+
+        if (!chatId) return;
+        console.log("Delete from firestore start");
+        try {
+            const chatHistoryDoc = doc(db, "chat_histories", chatId);
+            await deleteDoc(chatHistoryDoc);
+            console.log("Chat History Doc: ", chatHistoryDoc);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    const deleteChatsInStore = () => {
+        console.log("Deleting Chats from Store: ", chatId);
+
+        if (!chatId) return;
+        console.log("Delete from store start");
+
+        const chats = allChats.filter((chat) => chat.id !== chatId);
+
+        dispatch(setId({ id: "" }));
+        dispatch(setCurrentChat({ currentChat: [] }));
+        dispatch(setAllChats({ allChats: chats }));
     };
 
     const updateChatsInFirestore = async (chats: HistoryType[]) => {
@@ -205,12 +234,32 @@ const Home = () => {
                     >
                         <FaMagnifyingGlass />
                     </IconButton>
-                    <IconButton
-                        color="var(--customGray)"
-                        bgColor="var(--customNeutral)"
-                    >
-                        <HiDotsHorizontal />
-                    </IconButton>
+                    <div className=" relative">
+                        <div className=" relative z-10">
+                            <IconButton
+                                color="var(--customGray)"
+                                bgColor="var(--customNeutral)"
+                                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                            >
+                                <HiDotsHorizontal />
+                            </IconButton>
+                        </div>
+                        <menu
+                            className={` absolute right-0 top-0 grid origin-top-right gap-4 rounded-lg bg-white p-4 py-20 pb-4 text-white transition-all duration-500 *:flex *:items-center *:justify-center *:gap-1 *:rounded-lg *:bg-customGreen *:p-4 *:py-2 ${isMenuOpen ? "scale-100" : "scale-0"}`}
+                        >
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    deleteChatsInStore();
+                                    deleteChatsInFirestore();
+                                }}
+                            >
+                                {" "}
+                                <FaTrashCan /> Delete
+                            </button>
+                            <button type="button">Edit</button>
+                        </menu>
+                    </div>
                 </div>
                 <div className="no-scrollbar col-[1/-1] flex-grow overflow-y-scroll rounded-lg bg-customNeutral px-32 py-4 text-sm">
                     <ChatsContainer />
