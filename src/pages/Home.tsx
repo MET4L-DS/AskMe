@@ -144,7 +144,7 @@ const Home = () => {
 
     async function getResponse() {
         // For text-only input, use the gemini-pro model
-        const model = genAI.getGenerativeModel({ model: "gemini-1.0-pro" });
+        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
         let newChat: HistoryType[] = [
             { role: "user", parts: [{ text: prompt }] },
