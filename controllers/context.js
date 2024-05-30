@@ -22,7 +22,7 @@ const getContext = async (req, res) => {
             model: "Muennighoff/SGPT-125M-weightedmean-msmarco-specb-bitfit",
         });
 
-        const directory = "./vector-store";
+        const directory = "./VectorStore";
 
         const vectorStore = await FaissStore.load(directory, embeddings);
 
