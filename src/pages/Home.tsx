@@ -192,7 +192,8 @@ const Home = () => {
         console.log("Page Context: ", context);
 
         const promptWithContext = `
-        Answer the question based on the context provided below. If the question is irrelevant, just say "Question is irrelevant".
+        Answer the question by extracting relevant information from the CONTEXT below provided from Indian Penal Code. If the question is not related to Indian Penal Code, just say "Question is irrelevant".
+
         CONTEXT:${context}
 
         QUESTION:${prompt}
