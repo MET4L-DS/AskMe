@@ -20,7 +20,7 @@ const getContext = async (req, res) => {
         // const pineconeIndex = pinecone.Index("law-gpt-embeddings");
 
         // const embeddings = new HuggingFaceInferenceEmbeddings({
-        //     apiKey: "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", // In Node.js defaults to process.env.HUGGINGFACEHUB_API_KEY
+        //     apiKey: "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", // In Node.js defaults to process.env.HUGGINGFACEHUB_API_KEY
         //     // model: "intfloat/multilingual-e5-large",
         //     model: "Muennighoff/SGPT-125M-weightedmean-msmarco-specb-bitfit",
         // });
@@ -32,7 +32,7 @@ const getContext = async (req, res) => {
             taskType: TaskType.RETRIEVAL_DOCUMENT,
         });
 
-        const directory = "./IPCBookVectorStore";
+        const directory = "./VectorStore";
 
         const vectorStore = await FaissStore.load(directory, embeddings);
 
@@ -40,7 +40,7 @@ const getContext = async (req, res) => {
         //     pineconeIndex,
         // });
 
-        const data = await vectorStore.similaritySearch(prompt, 5);
+        const data = await vectorStore.similaritySearch(prompt, 20);
 
         console.log(data);
         res.status(200).json({ prompt: prompt, data: data });
