@@ -3,31 +3,19 @@ import { HuggingFaceInferenceEmbeddings } from "@langchain/community/embeddings/
 import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
 import { TaskType } from "@google/generative-ai";
 
-// import { Pinecone } from "@pinecone-database/pinecone";
-// import { PineconeStore } from "@langchain/pinecone";
-
 import { FaissStore } from "@langchain/community/vectorstores/faiss";
+import dotenv from "dotenv";
+dotenv.config();
 
 const getContext = async (req, res) => {
     const { prompt } = req.body;
 
     try {
         console.log(prompt);
-        // const pinecone = new Pinecone({
-        //     apiKey: "9b0c2770-8107-48e3-9b4a-b12f71b88372",
-        // });
-
-        // const pineconeIndex = pinecone.Index("law-gpt-embeddings");
-
-        // const embeddings = new HuggingFaceInferenceEmbeddings({
-        //     apiKey: "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", // In Node.js defaults to process.env.HUGGINGFACEHUB_API_KEY
-        //     // model: "intfloat/multilingual-e5-large",
-        //     model: "Muennighoff/SGPT-125M-weightedmean-msmarco-specb-bitfit",
-        // });
+        console.log("GOOGLE_API_KEY", process.env.GOOGLE_API_KEY);
 
         const embeddings = new GoogleGenerativeAIEmbeddings({
-            apiKey: "AIzaSyD6SwZ0GQ-zeZ1r9Rvnp8hDcbwMGoxpm7I",
-
+            apiKey: process.env.GOOGLE_API_KEY,
             model: "text-embedding-004", // 768 dimensions
             taskType: TaskType.RETRIEVAL_DOCUMENT,
         });
@@ -35,10 +23,6 @@ const getContext = async (req, res) => {
         const directory = "./VectorStore";
 
         const vectorStore = await FaissStore.load(directory, embeddings);
-
-        // const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
-        //     pineconeIndex,
-        // });
 
         const data = await vectorStore.similaritySearch(prompt, 20);
 
