@@ -114,7 +114,7 @@ const Home = () => {
 
     const printResponseText = (text: string) => {
         const textArray = text.split(" ");
-        let emptyTextArray = [];
+        const emptyTextArray : string[] = [];
 
         textArray.forEach((word, _index) => {
             emptyTextArray.push(word);
