@@ -20,11 +20,11 @@ const getContext = async (req, res) => {
             taskType: TaskType.RETRIEVAL_DOCUMENT,
         });
 
-        const directory = "./VectorStore";
+        const directory = "./IPCBookVectorStore";
 
         const vectorStore = await FaissStore.load(directory, embeddings);
 
-        const data = await vectorStore.similaritySearch(prompt, 20);
+        const data = await vectorStore.similaritySearch(prompt, 100);
 
         console.log(data);
         res.status(200).json({ prompt: prompt, data: data });
