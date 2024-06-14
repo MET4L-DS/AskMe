@@ -8,7 +8,7 @@ import axios from "axios";
 
 import { ChatsContainer, ChatBar, IconButton, Sidebar } from "../components";
 
-import { HistoryType, InlineImageType } from "../types";
+import { HistoryType, InlineImageType, ContextType } from "../types";
 
 import { FaMagnifyingGlass, FaTrashCan } from "react-icons/fa6";
 import { HiDotsHorizontal } from "react-icons/hi";
@@ -37,11 +37,6 @@ import { onAuthStateChanged } from "firebase/auth";
 
 import { useState } from "react";
 
-type context = {
-    pageContent: string;
-    metadata: any;
-};
-
 const Home = () => {
     const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
     const genAI = new GoogleGenerativeAI(API_KEY);
@@ -63,10 +58,6 @@ const Home = () => {
             category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
             threshold: HarmBlockThreshold.BLOCK_NONE,
         },
-        // {
-        //     category: HarmCategory.HARM_CATEGORY_UNSPECIFIED,
-        //     threshold: HarmBlockThreshold.BLOCK_NONE,
-        // },
     ];
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -163,7 +154,10 @@ const Home = () => {
     };
 
     const textAndImagePromptRun = async () => {
-        const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
+        const model = genAI.getGenerativeModel({
+            model: "gemini-pro-vision",
+            safetySettings,
+        });
         const images = [inlineImageData] as [InlineImageType];
 
         dispatch(setIsLoading({ isLoading: true }));
@@ -211,7 +205,7 @@ const Home = () => {
             prompt: prompt,
         });
 
-        const contexts: context[] = await response.data.data;
+        const contexts: ContextType[] = await response.data.data;
 
         console.log("Context: ", contexts);
 

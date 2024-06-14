@@ -1,5 +1,3 @@
-import { HuggingFaceInferenceEmbeddings } from "@langchain/community/embeddings/hf";
-
 import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
 import { TaskType } from "@google/generative-ai";
 

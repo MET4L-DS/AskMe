@@ -12,4 +12,9 @@ type InlineImageType = {
     };
 };
 
-export type { HistoryType, InlineImageType };
+type ContextType = {
+    pageContent: string;
+    metadata: any;
+};
+
+export type { HistoryType, InlineImageType, ContextType };
