@@ -1,4 +1,8 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import {
+    GoogleGenerativeAI,
+    HarmBlockThreshold,
+    HarmCategory,
+} from "@google/generative-ai";
 
 import axios from "axios";
 
@@ -41,6 +45,29 @@ type context = {
 const Home = () => {
     const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
     const genAI = new GoogleGenerativeAI(API_KEY);
+
+    const safetySettings = [
+        {
+            category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+            threshold: HarmBlockThreshold.BLOCK_NONE,
+        },
+        {
+            category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+            threshold: HarmBlockThreshold.BLOCK_NONE,
+        },
+        {
+            category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+            threshold: HarmBlockThreshold.BLOCK_NONE,
+        },
+        {
+            category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+            threshold: HarmBlockThreshold.BLOCK_NONE,
+        },
+        // {
+        //     category: HarmCategory.HARM_CATEGORY_UNSPECIFIED,
+        //     threshold: HarmBlockThreshold.BLOCK_NONE,
+        // },
+    ];
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -153,7 +180,10 @@ const Home = () => {
 
     async function getResponse() {
         // For text-only input, use the gemini-pro model
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const model = genAI.getGenerativeModel({
+            model: "gemini-1.5-flash",
+            safetySettings,
+        });
 
         let newChat: HistoryType[] = [
             { role: "user", parts: [{ text: prompt }] },
@@ -192,7 +222,7 @@ const Home = () => {
         console.log("Page Context: ", context);
 
         const promptWithContext = `
-        Answer the question by extracting relevant information from the CONTEXT below. If the question is not related, just say "Question is irrelevant".
+        Answer the question by extracting relevant information on Indian Penal Code provided in the CONTEXT below. Highlight the Sections of Indian Penal Code that are applicable in your responses. Do not use the word 'context' in your responses. If the question is not related, just say "Question is irrelevant".
 
         CONTEXT:${context}
 

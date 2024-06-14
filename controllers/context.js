@@ -20,7 +20,7 @@ const getContext = async (req, res) => {
             taskType: TaskType.RETRIEVAL_DOCUMENT,
         });
 
-        const directory = "./IPCBookVectorStore";
+        const directory = "./IPCCombinedVectorStore";
 
         const vectorStore = await FaissStore.load(directory, embeddings);
 
