@@ -141,7 +141,7 @@ const Home = () => {
 
     const printResponseText = (text: string) => {
         const textArray = text.split(" ");
-        const emptyTextArray : string[] = [];
+        const emptyTextArray: string[] = [];
 
         textArray.forEach((word, _index) => {
             emptyTextArray.push(word);
@@ -200,17 +200,15 @@ const Home = () => {
         dispatch(setIsLoading({ isLoading: true }));
 
         const url = "http://localhost:3000/api/v1/context";
-
-        const response = await axios.post(url, {
+        const axiosResponse = await axios.post(url, {
             prompt: prompt,
         });
 
-        const contexts: ContextType[] = await response.data.data;
+        const contexts: ContextType[] = await axiosResponse.data.data;
 
         console.log("Context: ", contexts);
 
         const pageContentArray = contexts.map((context) => context.pageContent);
-        // console.log("Context Page Content: ", pageContentArray);
 
         const context = pageContentArray.join("\n\n");
         console.log("Page Context: ", context);
@@ -222,58 +220,67 @@ const Home = () => {
 
         QUESTION:${prompt}
         `;
+
+        let chatText;
+
         try {
             const result = await chat.sendMessage(promptWithContext);
             const response = result.response;
-            dispatch(setIsLoading({ isLoading: false }));
-            newChat = [...newChat, { role: "model", parts: [{ text: "" }] }];
+            chatText = response.text();
+        } catch (error: any) {
+            console.log({ error });
+
+            if (error?.response?.promptFeedback?.blockReason) {
+                chatText =
+                    "The response was blocked. Please try something else.";
+            } else {
+                chatText = "Something went wrong. Please try something else.";
+            }
+        }
+
+        dispatch(setIsLoading({ isLoading: false }));
+        newChat = [...newChat, { role: "model", parts: [{ text: "" }] }];
+        dispatch(
+            setCurrentChat({
+                currentChat: [...currentChat, ...newChat],
+            }),
+        );
+
+        printResponseText(chatText);
+
+        const updatedNewChat: HistoryType[] = [
+            { role: "user", parts: [{ text: prompt }] },
+            { role: "model", parts: [{ text: chatText }] },
+        ];
+        const updatedChat: HistoryType[] = [...currentChat, ...updatedNewChat];
+
+        if (chatId) {
+            console.log("Updated Chat: ", updatedChat);
+
+            updateChatsInFirestore(updatedChat);
             dispatch(
-                setCurrentChat({
-                    currentChat: [...currentChat, ...newChat],
+                updateIndividualChat({
+                    id: chatId,
+                    chats: [...updatedChat],
                 }),
             );
+        } else {
+            if (userId) {
+                const chatDoc = await addChatsInFirestore(updatedChat);
+                console.log("Adding Chat Doc ID: ", chatDoc?.id);
 
-            printResponseText(response.text());
+                console.log("Adding DONE");
 
-            const updatedNewChat: HistoryType[] = [
-                { role: "user", parts: [{ text: prompt }] },
-                { role: "model", parts: [{ text: response.text() }] },
-            ];
-            const updatedChat: HistoryType[] = [
-                ...currentChat,
-                ...updatedNewChat,
-            ];
-            if (chatId) {
-                console.log("Updated Chat: ", updatedChat);
-
-                updateChatsInFirestore(updatedChat);
                 dispatch(
-                    updateIndividualChat({
-                        id: chatId,
-                        chats: [...updatedChat],
+                    setAllChats({
+                        allChats: [
+                            ...allChats,
+                            { id: chatDoc?.id, chats: updatedChat },
+                        ],
                     }),
                 );
-            } else {
-                if (userId) {
-                    const chatDoc = await addChatsInFirestore(updatedChat);
-                    console.log("Adding Chat Doc ID: ", chatDoc?.id);
-
-                    console.log("Adding DONE");
-
-                    dispatch(
-                        setAllChats({
-                            allChats: [
-                                ...allChats,
-                                { id: chatDoc?.id, chats: updatedChat },
-                            ],
-                        }),
-                    );
-                    dispatch(setId({ id: chatDoc?.id }));
-                }
+                dispatch(setId({ id: chatDoc?.id }));
             }
-        } catch (error) {
-            console.log(error);
-            dispatch(setIsLoading({ isLoading: false }));
         }
     }
 
