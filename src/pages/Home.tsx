@@ -1,11 +1,18 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import {
+    GoogleGenerativeAI,
+    HarmBlockThreshold,
+    HarmCategory,
+} from "@google/generative-ai";
+
+import axios from "axios";
 
 import { ChatsContainer, ChatBar, IconButton, Sidebar } from "../components";
 
-import { HistoryType, InlineImageType } from "../types";
+import { HistoryType, InlineImageType, ContextType } from "../types";
 
 import { FaMagnifyingGlass, FaTrashCan } from "react-icons/fa6";
 import { HiDotsHorizontal } from "react-icons/hi";
+
 import { useDispatch, useSelector } from "react-redux";
 import {
     setLastChatText,
@@ -27,11 +34,31 @@ import { updateIndividualChat, setAllChats } from "../features/main/mainSlice";
 import { setUser } from "../features/user/userSlice";
 
 import { onAuthStateChanged } from "firebase/auth";
+
 import { useState } from "react";
 
 const Home = () => {
     const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
     const genAI = new GoogleGenerativeAI(API_KEY);
+
+    const safetySettings = [
+        {
+            category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+            threshold: HarmBlockThreshold.BLOCK_NONE,
+        },
+        {
+            category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+            threshold: HarmBlockThreshold.BLOCK_NONE,
+        },
+        {
+            category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+            threshold: HarmBlockThreshold.BLOCK_NONE,
+        },
+        {
+            category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+            threshold: HarmBlockThreshold.BLOCK_NONE,
+        },
+    ];
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -127,7 +154,10 @@ const Home = () => {
     };
 
     const textAndImagePromptRun = async () => {
-        const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
+        const model = genAI.getGenerativeModel({
+            model: "gemini-pro-vision",
+            safetySettings,
+        });
         const images = [inlineImageData] as [InlineImageType];
 
         dispatch(setIsLoading({ isLoading: true }));
@@ -144,7 +174,10 @@ const Home = () => {
 
     async function getResponse() {
         // For text-only input, use the gemini-pro model
-        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+        const model = genAI.getGenerativeModel({
+            model: "gemini-1.5-flash",
+            safetySettings,
+        });
 
         let newChat: HistoryType[] = [
             { role: "user", parts: [{ text: prompt }] },
@@ -165,8 +198,32 @@ const Home = () => {
         });
 
         dispatch(setIsLoading({ isLoading: true }));
+
+        const url = "http://localhost:3000/api/v1/context";
+
+        const response = await axios.post(url, {
+            prompt: prompt,
+        });
+
+        const contexts: ContextType[] = await response.data.data;
+
+        console.log("Context: ", contexts);
+
+        const pageContentArray = contexts.map((context) => context.pageContent);
+        // console.log("Context Page Content: ", pageContentArray);
+
+        const context = pageContentArray.join("\n\n");
+        console.log("Page Context: ", context);
+
+        const promptWithContext = `
+        Answer the question by extracting relevant information on Indian Penal Code provided in the CONTEXT below. Highlight the Sections of Indian Penal Code that are applicable in your responses. Do not use the word 'context' in your responses. If the question is not related, just say "Question is irrelevant".
+
+        CONTEXT:${context}
+
+        QUESTION:${prompt}
+        `;
         try {
-            const result = await chat.sendMessage(prompt);
+            const result = await chat.sendMessage(promptWithContext);
             const response = result.response;
             dispatch(setIsLoading({ isLoading: false }));
             newChat = [...newChat, { role: "model", parts: [{ text: "" }] }];
