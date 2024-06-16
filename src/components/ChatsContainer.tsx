@@ -15,6 +15,10 @@ const ChatsContainer = () => {
         );
     };
 
+    const textToListFormatter = (text: string) => {
+        return text.replace(/^\* (.+)/gm, "<li class=''>$1</li>");
+    };
+
     // function textFormatter(text: string) {
     //     // Split the text by new lines and asterisks
     //     const parts = text.split(/\n|\*/);
@@ -57,9 +61,11 @@ const ChatsContainer = () => {
                 const formattedText = textFormatter(
                     item.parts.map((part) => part.text).join("\n"),
                 );
+
+                const formattedListText = textToListFormatter(formattedText);
                 return (
                     <Chat key={index} role={item.role}>
-                        {formattedText}
+                        {formattedListText}
                     </Chat>
                 );
             })}
