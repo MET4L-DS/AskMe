@@ -4,10 +4,9 @@ export default {
     theme: {
         extend: {
             colors: {
-                customGreen: "hsl(165, 83%, 35%)",
-                customLightGreen: "hsl(166, 39%, 89%)",
-                customAccentYellow: "hsl(40, 99%, 66%)",
-                customAccentMaroon: "hsl(360, 83%, 70%)",
+                customGreen: "hsl(262, 40%, 55%)",
+                customLightGreen: "hsl(263, 52%, 91%)",
+                customAccent: "hsl(262, 62%, 61%)",
                 customNeutral: "hsl(0, 0%, 94%)",
                 customGray: "hsl(0, 0%, 67%)",
                 customDark100: "hsl(228, 11%, 57%)",

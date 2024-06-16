@@ -15,33 +15,29 @@ const Iconbar = () => {
 
     return (
         <div className="flex flex-col border-r border-customLightGreen p-4">
-            <IconButton
-                color="white"
-                bgColor="var(--customGray)"
-                className="mb-12"
-            >
+            <IconButton color="white" bgColor="customGray" className="mb-12">
                 <FaPenFancy />
             </IconButton>
             <div className="flex flex-col gap-4">
-                <IconButton color="white" bgColor="var(--customGreen)">
+                <IconButton color="white" bgColor="customGreen">
                     <IoChatbubble />
                 </IconButton>
                 <IconButton
-                    color="var(--customGreen)"
+                    color="customGreen"
                     bgColor="white"
                     className=" text-2xl"
                 >
                     <IoSettings />
                 </IconButton>
                 <IconButton
-                    color="var(--customGreen)"
+                    color="customGreen"
                     bgColor="white"
                     className=" text-2xl"
                 >
                     <IoCompass />
                 </IconButton>
                 <IconButton
-                    color="var(--customGreen)"
+                    color="customGreen"
                     bgColor="white"
                     className=" text-2xl"
                 >
@@ -52,7 +48,7 @@ const Iconbar = () => {
                 <Link to="/login">
                     <IconButton
                         color="white"
-                        bgColor="var(--customGreen)"
+                        bgColor="customGreen"
                         className=""
                     >
                         {email?.slice(0, 2).toUpperCase() || "Y"}
@@ -60,18 +56,14 @@ const Iconbar = () => {
                 </Link>
                 <Link to="/logout">
                     <IconButton
-                        color="var(--customGreen)"
+                        color="customGreen"
                         bgColor="white"
                         className=" "
                     >
                         <IoLogOut />
                     </IconButton>
                 </Link>
-                <IconButton
-                    color="var(--customGreen)"
-                    bgColor="white"
-                    className=""
-                >
+                <IconButton color="customGreen" bgColor="white" className="">
                     <MdLightMode />
                 </IconButton>
             </div>

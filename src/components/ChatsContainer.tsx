@@ -9,7 +9,10 @@ const ChatsContainer = () => {
         (state: RootType) => state.chat!,
     );
     const textFormatter = (text: string) => {
-        return text.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
+        return text.replace(
+            /\*\*(.*?)\*\*/g,
+            "<b class='text-white bg-customAccent px-2 rounded-lg'>$1</b>",
+        );
     };
 
     // function textFormatter(text: string) {

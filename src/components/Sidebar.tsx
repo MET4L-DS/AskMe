@@ -15,7 +15,11 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
 import { RootType } from "../store";
 import { setAllChats } from "../features/main/mainSlice";
-import { setId, setCurrentChat } from "../features/chat/chatSlice";
+import {
+    setId,
+    setCurrentChat,
+    setIsLoading,
+} from "../features/chat/chatSlice";
 import { useEffect } from "react";
 
 const Sidebar = () => {
@@ -72,18 +76,16 @@ const Sidebar = () => {
                     <h1 className="mr-auto text-3xl font-semibold">My Chats</h1>
                     <IconButton
                         color="white"
-                        bgColor="var(--customGreen)"
+                        bgColor="customGreen"
                         onClick={() => {
                             dispatch(setId({ id: "" }));
                             dispatch(setCurrentChat({ currentChat: [] }));
+                            dispatch(setIsLoading({ isLoading: false }));
                         }}
                     >
                         <FaPlus />
                     </IconButton>
-                    <IconButton
-                        color="var(--customGray)"
-                        bgColor="var(--customNeutral)"
-                    >
+                    <IconButton color="customGray" bgColor="customNeutral">
                         <HiDotsHorizontal />
                     </IconButton>
                 </div>
@@ -111,7 +113,7 @@ const Sidebar = () => {
                     <div className="relative flex flex-grow items-center">
                         <div className="absolute left-0">
                             <IconButton
-                                color="var(--customGray)"
+                                color="customGray"
                                 bgColor="transparent"
                             >
                                 <FaMagnifyingGlass />
@@ -125,10 +127,7 @@ const Sidebar = () => {
                             className=" flex-grow rounded-lg bg-customNeutral p-2 pl-10"
                         />
                     </div>
-                    <IconButton
-                        color="var(--customGray)"
-                        bgColor="var(--customNeutral)"
-                    >
+                    <IconButton color="customGray" bgColor="customNeutral">
                         <IoFilter />
                     </IconButton>
                 </div>
@@ -153,7 +152,9 @@ const Sidebar = () => {
                                 <h3 className=" col-[2/3] line-clamp-1 font-bold text-customDark400">
                                     {chat.chats[0].parts[0].text}
                                 </h3>
-                                <span className="col-[3/4] flex items-center justify-end text-xs font-bold text-customGray">
+                                <span
+                                    className={`col-[3/4] flex items-center justify-end text-xs font-bold  ${chat.id === currentChatId ? "text-customAccent" : "text-customGray"}`}
+                                >
                                     9:34 PM
                                 </span>
                                 <p className="col-[2/-1] line-clamp-3 text-justify text-sm text-customDark200">

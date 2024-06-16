@@ -24,7 +24,7 @@ const Chat = ({ children, role }: ChatProps) => {
             </div>
             <div className="relative ">
                 <div className="absolute left-0 top-0 grid -translate-x-1/2 -translate-y-1/2 place-items-center font-bold">
-                    <IconButton color="white" bgColor="var(--customGreen)">
+                    <IconButton color="white" bgColor="customGreen">
                         {role === "user" ? (
                             user?.email?.slice(0, 2).toUpperCase() || "Y"
                         ) : (

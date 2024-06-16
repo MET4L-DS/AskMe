@@ -292,17 +292,14 @@ const Home = () => {
                     <h2 className=" mr-auto line-clamp-1 text-3xl font-semibold">
                         {currentChat[0]?.parts[0].text || "Ask Me"}
                     </h2>
-                    <IconButton
-                        color="var(--customGray)"
-                        bgColor="var(--customNeutral)"
-                    >
+                    <IconButton color="customGray" bgColor="customNeutral">
                         <FaMagnifyingGlass />
                     </IconButton>
                     <div className=" relative">
                         <div className=" relative z-10">
                             <IconButton
-                                color="var(--customGray)"
-                                bgColor="var(--customNeutral)"
+                                color="customGray"
+                                bgColor="customNeutral"
                                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                             >
                                 <HiDotsHorizontal />
