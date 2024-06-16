@@ -146,10 +146,14 @@ const Sidebar = () => {
                                     );
                                 }}
                             >
-                                <div className=" col-[1/2] flex items-center justify-center text-sm text-customDark400">
+                                <div
+                                    className={` col-[1/2] flex items-center justify-center text-sm  ${chat.id === currentChatId ? "text-customGreen" : "text-customDark400"}`}
+                                >
                                     <FaPenFancy />
                                 </div>
-                                <h3 className=" col-[2/3] line-clamp-1 font-bold text-customDark400">
+                                <h3
+                                    className={` col-[2/3] line-clamp-1 font-bold  ${chat.id === currentChatId ? "text-customGreen" : " text-customDark400"}`}
+                                >
                                     {chat.chats[0].parts[0].text}
                                 </h3>
                                 <span
@@ -157,7 +161,9 @@ const Sidebar = () => {
                                 >
                                     9:34 PM
                                 </span>
-                                <p className="col-[2/-1] line-clamp-3 text-justify text-sm text-customDark200">
+                                <p
+                                    className={`col-[2/-1] line-clamp-3 text-justify text-sm  ${chat.id === currentChatId ? "text-customAccent" : "text-customDark200"}`}
+                                >
                                     {chat.chats[1].parts[0].text}
                                 </p>
                             </div>
