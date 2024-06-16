@@ -6,8 +6,6 @@ import {
     setPrompt,
     setImage,
     setInlineImageData,
-    appendChat,
-    setCurrentChat,
 } from "../features/chat/chatSlice";
 
 type CharBarProps = {
@@ -16,9 +14,7 @@ type CharBarProps = {
 };
 
 const ChatBar = ({ textAndImagePromptRun, getResponse }: CharBarProps) => {
-    const { prompt, image, currentChat } = useSelector(
-        (state: RootType) => state.chat!,
-    );
+    const { prompt, image } = useSelector((state: RootType) => state.chat!);
     const dispatch = useDispatch();
 
     const handleInput = () => {
@@ -107,7 +103,7 @@ const ChatBar = ({ textAndImagePromptRun, getResponse }: CharBarProps) => {
 
                 <button
                     type="button"
-                    className="h-full rounded-2xl bg-white px-4 shadow-xl hover:text-customGreen active:bg-customGreen active:text-white "
+                    className="h-full rounded-2xl bg-white px-4 font-bold shadow-xl hover:text-customGreen active:bg-customGreen active:text-white "
                     onClick={() => {
                         if (!prompt) return;
                         handleInput();
