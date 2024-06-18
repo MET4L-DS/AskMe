@@ -20,7 +20,7 @@ import {
     setCurrentChat,
     setIsLoading,
 } from "../features/chat/chatSlice";
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
 
 import { motion } from "framer-motion";
 
@@ -71,7 +71,12 @@ const Sidebar = () => {
     }, [userId]);
 
     return (
-        <aside className="col-[1/3] flex">
+        <motion.aside
+            initial={{ x: -100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 1 }}
+            className="col-[1/3] flex"
+        >
             <Iconbar />
             <div className=" flex flex-grow flex-col gap-4 px-4">
                 <div className="mt-4 flex justify-between gap-4">
@@ -138,12 +143,20 @@ const Sidebar = () => {
                     </IconButton>
                 </div>
                 <div className=" no-scrollbar flex flex-grow flex-col gap-2 overflow-y-scroll">
-                    {allChats?.map((chat) => {
+                    {allChats?.map((chat, index) => {
                         return (
                             <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{
+                                    opacity: 1,
+                                    transition: {
+                                        duration: 0.5,
+                                        delay: index * 0.1,
+                                    },
+                                }}
                                 whileHover={{
-                                    // scale: 1.02,
                                     backgroundColor: " hsl(263, 52%, 91%)",
+                                    transition: { duration: 0.2 },
                                 }}
                                 whileTap={{ scale: 0.98 }}
                                 key={chat.id}
@@ -188,7 +201,7 @@ const Sidebar = () => {
                     })}
                 </div>
             </div>
-        </aside>
+        </motion.aside>
     );
 };
-export default Sidebar;
+export default memo(Sidebar);

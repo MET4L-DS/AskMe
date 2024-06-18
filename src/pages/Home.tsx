@@ -36,6 +36,7 @@ import { setUser } from "../features/user/userSlice";
 import { onAuthStateChanged } from "firebase/auth";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 const Home = () => {
     const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
@@ -288,7 +289,12 @@ const Home = () => {
         <>
             <Sidebar />
             <main className="col-[3/-1] flex h-svh flex-col pb-4">
-                <div className="flex items-center justify-between gap-4 p-4 ">
+                <motion.div
+                    initial={{ opacity: 0, y: -50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1 }}
+                    className="flex items-center justify-between gap-4 p-4 "
+                >
                     <h2 className=" mr-auto line-clamp-1 text-3xl font-semibold">
                         {currentChat[0]?.parts[0].text || "Ask Me"}
                     </h2>
@@ -321,7 +327,7 @@ const Home = () => {
                             <button type="button">Edit</button>
                         </menu>
                     </div>
-                </div>
+                </motion.div>
                 <div className="no-scrollbar col-[1/-1] flex-grow overflow-y-scroll rounded-lg bg-customNeutral px-32 py-4 text-sm">
                     <ChatsContainer />
                     <ChatBar

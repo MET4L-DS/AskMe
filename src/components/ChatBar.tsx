@@ -9,6 +9,7 @@ import {
 } from "../features/chat/chatSlice";
 
 import { motion } from "framer-motion";
+import { memo } from "react";
 
 type CharBarProps = {
     textAndImagePromptRun: () => void;
@@ -125,4 +126,4 @@ const ChatBar = ({ textAndImagePromptRun, getResponse }: CharBarProps) => {
     );
 };
 
-export default ChatBar;
+export default memo(ChatBar);

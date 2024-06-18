@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { memo } from "react";
 
 const IconButton = ({
     children,
@@ -53,4 +54,4 @@ const IconButton = ({
         </motion.button>
     );
 };
-export default IconButton;
+export default memo(IconButton);

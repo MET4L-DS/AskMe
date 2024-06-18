@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { IconButton } from "./";
 import { useSelector } from "react-redux";
 import { RootType } from "../store";
+import { memo } from "react";
 
 const Iconbar = () => {
     const { email } = useSelector((state: RootType) => state.user!);
@@ -70,4 +71,4 @@ const Iconbar = () => {
         </div>
     );
 };
-export default Iconbar;
+export default memo(Iconbar);
