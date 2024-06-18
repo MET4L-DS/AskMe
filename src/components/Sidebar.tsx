@@ -22,6 +22,8 @@ import {
 } from "../features/chat/chatSlice";
 import { useEffect } from "react";
 
+import { motion } from "framer-motion";
+
 const Sidebar = () => {
     const { id: userId } = useSelector((state: RootType) => state.user!);
     const { allChats } = useSelector((state: RootType) => state.main!);
@@ -90,7 +92,9 @@ const Sidebar = () => {
                     </IconButton>
                 </div>
                 <div className="flex gap-4 rounded-lg bg-customNeutral p-1 *:rounded *:p-3 *:text-xs *:font-bold *:uppercase">
-                    <button
+                    <motion.button
+                        whileHover={{ backgroundColor: " hsl(263, 52%, 91%)" }}
+                        whileTap={{ scale: 0.98 }}
                         className=" flex flex-grow items-center justify-center gap-1 bg-white text-customGreen"
                         type="button"
                     >
@@ -99,15 +103,17 @@ const Sidebar = () => {
                         <span className=" rounded bg-customLightGreen px-1">
                             {allChats.length}
                         </span>
-                    </button>
-                    <button
+                    </motion.button>
+                    <motion.button
+                        whileHover={{ backgroundColor: " hsl(263, 52%, 91%)" }}
+                        whileTap={{ scale: 0.98 }}
                         className=" flex flex-grow items-center justify-center gap-1"
                         type="button"
                     >
                         <FaBookmark />
                         <span>Saved</span>
                         <span className=" rounded bg-customGray px-1">24</span>
-                    </button>
+                    </motion.button>
                 </div>
                 <div className="flex gap-2">
                     <div className="relative flex flex-grow items-center">
@@ -134,9 +140,14 @@ const Sidebar = () => {
                 <div className=" no-scrollbar flex flex-grow flex-col gap-2 overflow-y-scroll">
                     {allChats?.map((chat) => {
                         return (
-                            <div
+                            <motion.div
+                                whileHover={{
+                                    // scale: 1.02,
+                                    backgroundColor: " hsl(263, 52%, 91%)",
+                                }}
+                                whileTap={{ scale: 0.98 }}
                                 key={chat.id}
-                                className={`history-item-template grid min-h-20 gap-y-2 ${chat.id === currentChatId ? "bg-customLightGreen" : ""} rounded-lg py-2 pr-4`}
+                                className={`history-item-template relative grid min-h-20 gap-y-2 ${chat.id === currentChatId ? "" : ""} rounded-lg py-2 pr-4`}
                                 onClick={() => {
                                     dispatch(setId({ id: chat.id }));
                                     dispatch(
@@ -146,16 +157,19 @@ const Sidebar = () => {
                                     );
                                 }}
                             >
+                                {chat.id === currentChatId && (
+                                    <div className=" absolute left-0 top-0 h-full w-1 bg-customGreen" />
+                                )}
                                 <div
                                     className={` col-[1/2] flex items-center justify-center text-sm  ${chat.id === currentChatId ? "text-customGreen" : "text-customDark400"}`}
                                 >
                                     <FaPenFancy />
                                 </div>
-                                <h3
-                                    className={` col-[2/3] line-clamp-1 font-bold  ${chat.id === currentChatId ? "text-customGreen" : " text-customDark400"}`}
+                                <motion.h3
+                                    className={` col-[2/3] line-clamp-1 font-bold ${chat.id === currentChatId ? "text-customGreen" : " text-customDark400"}`}
                                 >
                                     {chat.chats[0].parts[0].text}
-                                </h3>
+                                </motion.h3>
                                 <span
                                     className={`col-[3/4] flex items-center justify-end text-xs font-bold  ${chat.id === currentChatId ? "text-customAccent" : "text-customGray"}`}
                                 >
@@ -166,7 +180,7 @@ const Sidebar = () => {
                                 >
                                     {chat.chats[1].parts[0].text}
                                 </p>
-                            </div>
+                            </motion.div>
                         );
                     })}
                 </div>

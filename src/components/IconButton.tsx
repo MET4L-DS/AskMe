@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 const IconButton = ({
     children,
     color = "",
@@ -40,13 +42,14 @@ const IconButton = ({
     ];
     // const className = `text-${color} bg-${bgColor}`;
     return (
-        <button
+        <motion.button
+            whileHover={{ scale: 1.1 }}
             type="button"
             className={` grid aspect-square w-10 grid-flow-col items-center justify-center gap-1 rounded-xl text-${color} bg-${bgColor} ${className}`}
             onClick={onClick}
         >
             {children}
-        </button>
+        </motion.button>
     );
 };
 export default IconButton;

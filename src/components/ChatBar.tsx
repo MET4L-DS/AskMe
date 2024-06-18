@@ -8,6 +8,8 @@ import {
     setInlineImageData,
 } from "../features/chat/chatSlice";
 
+import { motion } from "framer-motion";
+
 type CharBarProps = {
     textAndImagePromptRun: () => void;
     getResponse: () => void;
@@ -65,8 +67,9 @@ const ChatBar = ({ textAndImagePromptRun, getResponse }: CharBarProps) => {
 
             <div className="flex flex-grow items-center gap-4">
                 <div className=" relative flex flex-grow">
-                    <input
-                        className="flex-grow rounded-2xl bg-white p-4 pr-16 text-base font-semibold shadow-xl focus:outline-0"
+                    <motion.input
+                        whileFocus={{ outline: "2px solid hsl(262, 40%, 55%)" }}
+                        className="flex-grow rounded-2xl border-none bg-white p-4 pr-16 text-base font-semibold shadow-xl outline-none focus:border-none focus:outline-none"
                         type="text"
                         name="input"
                         id="input"
@@ -101,16 +104,22 @@ const ChatBar = ({ textAndImagePromptRun, getResponse }: CharBarProps) => {
                     className=" hidden"
                 />
 
-                <button
+                <motion.button
                     type="button"
-                    className="h-full rounded-2xl bg-white px-4 font-bold shadow-xl hover:text-customGreen active:bg-customGreen active:text-white "
+                    whileHover={{ backgroundColor: "hsl(263, 52%, 91%)" }}
+                    whileTap={{
+                        backgroundColor: "hsl(262, 40%, 55%)",
+                        color: "white",
+                        scale: 0.95,
+                    }}
+                    className="h-full rounded-2xl bg-white px-4 font-bold shadow-xl"
                     onClick={() => {
                         if (!prompt) return;
                         handleInput();
                     }}
                 >
                     Generate
-                </button>
+                </motion.button>
             </div>
         </div>
     );

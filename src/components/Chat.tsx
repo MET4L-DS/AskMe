@@ -20,7 +20,7 @@ const Chat = ({ children, role }: ChatProps) => {
     return (
         <div className="grid gap-1">
             <div className="px-8 font-semibold ">
-                {role === "user" ? "You" : "Teacher"}
+                {role === "user" ? "You" : "Advisor"}
             </div>
             <div className="relative ">
                 <div className="absolute left-0 top-0 grid -translate-x-1/2 -translate-y-1/2 place-items-center font-bold">
