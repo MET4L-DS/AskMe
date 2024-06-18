@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { SharedLayout, Home, SignUp, Logout, Login } from "./pages";
-import SignIn from "./pages/SignIn";
-
+import { SharedLayout, Home, SignUp, Logout,SignIn } from "./pages";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const App = () => {
     return (
         <BrowserRouter>
@@ -13,6 +13,7 @@ const App = () => {
                     <Route path="/login" element={<SignIn />} />
                 </Route>
             </Routes>
+            <ToastContainer />
         </BrowserRouter>
     );
 };

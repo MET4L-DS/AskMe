@@ -5,7 +5,7 @@ import { IoMdContact } from "react-icons/io";
 import { CiCalendarDate } from "react-icons/ci";
 import { FaSchool } from "react-icons/fa";
 import { MdEngineering } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../configs/firebase";
 import { setDoc, doc } from "firebase/firestore";
@@ -14,6 +14,8 @@ import { toast } from "react-toastify";
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -34,6 +36,12 @@ const SignUp = () => {
       }
       console.log("User Created Successfully");
       toast.success("User Created Successfully !!", { position: "top-center" });
+
+      const timeout = setTimeout(()=>{
+        clearTimeout(timeout);
+        navigate("/");
+      },1000);
+
     } catch (error:any) {
       console.log(error.message);
       toast.error("User Already Registered", { position: "bottom-center" });
