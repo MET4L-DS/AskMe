@@ -158,7 +158,10 @@ const Sidebar = () => {
                                 }}
                             >
                                 {chat.id === currentChatId && (
-                                    <div className=" absolute left-0 top-0 h-full w-1 bg-customGreen" />
+                                    <motion.div
+                                        layoutId="active-chat"
+                                        className=" absolute left-0 top-0 h-full w-1 bg-customGreen"
+                                    />
                                 )}
                                 <div
                                     className={` col-[1/2] flex items-center justify-center text-sm  ${chat.id === currentChatId ? "text-customGreen" : "text-customDark400"}`}

@@ -44,6 +44,7 @@ const IconButton = ({
     return (
         <motion.button
             whileHover={{ scale: 1.1 }}
+            whileTap={{ color: "white", backgroundColor: "hsl(262, 40%, 55%)" }}
             type="button"
             className={` grid aspect-square w-10 grid-flow-col items-center justify-center gap-1 rounded-xl text-${color} bg-${bgColor} ${className}`}
             onClick={onClick}

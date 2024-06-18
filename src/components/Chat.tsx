@@ -32,14 +32,13 @@ const Chat = ({ children, role }: ChatProps) => {
                         )}
                     </IconButton>
                 </div>
-                <pre
-                    className={`text-wrap rounded-2xl ${role === "user" ? "bg-white py-4" : " bg-customLightGreen py-8"} w-fit px-10 `}
-                    // dangerouslySetInnerHTML={{__html: prevHistoryText,}}
+                <div
+                    className={`rounded-2xl ${role === "user" ? "bg-white py-4" : " text-balance bg-customLightGreen py-8"} w-fit px-10 `}
                     dangerouslySetInnerHTML={{ __html: children }}
                 >
                     {/* {htmlParser(children)} */}
                     {/* {children} */}
-                </pre>
+                </div>
             </div>
         </div>
     );
