@@ -35,8 +35,8 @@ import { setUser } from "../features/user/userSlice";
 
 import { onAuthStateChanged } from "firebase/auth";
 
-import { useEffect, useState } from "react";
-import { motion, useAnimationControls } from "framer-motion";
+import { useState } from "react";
+import { motion } from "framer-motion";
 
 const Home = () => {
     const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
@@ -60,6 +60,8 @@ const Home = () => {
             threshold: HarmBlockThreshold.BLOCK_NONE,
         },
     ];
+
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const {
         prompt,
@@ -283,31 +285,6 @@ const Home = () => {
         }
     }
 
-    const menuControls = useAnimationControls();
-
-    const menuVariants = {
-        open: {
-            opacity: 1,
-            y: 0,
-            transition: { duration: 0.2 },
-        },
-        closed: {
-            opacity: 0,
-            y: -100,
-            transition: { duration: 0.2 },
-        },
-    };
-
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-    useEffect(() => {
-        if (isMenuOpen) {
-            menuControls.start("open");
-        } else {
-            menuControls.start("closed");
-        }
-    }, [isMenuOpen]);
-
     return (
         <>
             <Sidebar />
@@ -334,11 +311,8 @@ const Home = () => {
                                 <HiDotsHorizontal />
                             </IconButton>
                         </div>
-                        <motion.menu
-                            variants={menuVariants}
-                            initial="closed"
-                            animate={menuControls}
-                            className={` absolute right-0 top-0 grid origin-top-right gap-4 rounded-lg bg-white p-4 py-20 pb-4 text-white *:flex *:items-center *:justify-center *:gap-1 *:rounded-lg *:bg-customGreen *:p-4 *:py-2`}
+                        <menu
+                            className={` absolute right-0 top-0 grid origin-top-right gap-4 rounded-lg bg-white p-4 py-20 pb-4 text-white transition-all duration-500 *:flex *:items-center *:justify-center *:gap-1 *:rounded-lg *:bg-customGreen *:p-4 *:py-2 ${isMenuOpen ? "scale-100" : "scale-0"}`}
                         >
                             <button
                                 type="button"
@@ -351,23 +325,16 @@ const Home = () => {
                                 <FaTrashCan /> Delete
                             </button>
                             <button type="button">Edit</button>
-                        </motion.menu>
+                        </menu>
                     </div>
                 </motion.div>
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{
-                        opacity: 1,
-                        transition: { delay: 0.5, duration: 0.5 },
-                    }}
-                    className="no-scrollbar col-[1/-1] flex-grow overflow-y-scroll rounded-lg bg-customNeutral px-32 py-4 text-sm"
-                >
+                <div className="no-scrollbar col-[1/-1] flex-grow overflow-y-scroll rounded-lg bg-customNeutral px-32 py-4 text-sm">
                     <ChatsContainer />
                     <ChatBar
                         getResponse={getResponse}
                         textAndImagePromptRun={textAndImagePromptRun}
                     />
-                </motion.div>
+                </div>
             </main>
         </>
     );

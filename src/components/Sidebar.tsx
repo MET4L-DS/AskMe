@@ -74,7 +74,7 @@ const Sidebar = () => {
         <motion.aside
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 1 }}
             className="col-[1/3] flex"
         >
             <Iconbar />
