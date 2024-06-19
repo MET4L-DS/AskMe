@@ -75,7 +75,7 @@ const Sidebar = () => {
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 1 }}
-            className="col-[1/3] hidden h-screen md:flex"
+            className="col-[1/3] hidden h-screen lg:flex"
         >
             <Iconbar />
             <div className=" flex w-0 flex-grow flex-col gap-4 px-4 pb-4">

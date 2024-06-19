@@ -1,6 +1,6 @@
 import { IoChatbubble, IoCompass, IoLogOut, IoSettings } from "react-icons/io5";
 
-import { FaPenFancy } from "react-icons/fa6";
+import { GoLaw } from "react-icons/go";
 import { BsHexagonFill } from "react-icons/bs";
 import { MdLightMode } from "react-icons/md";
 
@@ -16,8 +16,12 @@ const Iconbar = () => {
 
     return (
         <div className="flex flex-col border-r border-customLightGreen p-4">
-            <IconButton color="white" bgColor="customGray" className="mb-12">
-                <FaPenFancy />
+            <IconButton
+                color="white"
+                bgColor=""
+                className="mb-12 bg-gradient-to-b from-customAccent to-customLightGreen text-xl"
+            >
+                <GoLaw />
             </IconButton>
             <div className="flex flex-col gap-4">
                 <IconButton color="white" bgColor="customGreen">

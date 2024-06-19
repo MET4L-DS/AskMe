@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { FaPenFancy } from "react-icons/fa";
+import { GoLaw } from "react-icons/go";
 import { IconButton } from "./";
 import { useSelector } from "react-redux";
 
@@ -23,7 +23,7 @@ const Chat = ({ children, role }: ChatProps) => {
                         {role === "user" ? (
                             user?.email?.slice(0, 2).toUpperCase() || "Y"
                         ) : (
-                            <FaPenFancy />
+                            <GoLaw size={20} />
                         )}
                     </IconButton>
                 </div>

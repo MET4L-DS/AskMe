@@ -290,7 +290,7 @@ const Home = () => {
             <Sidebar />
             <motion.main
                 transition={{ duration: 0.5 }}
-                className="col-[1/-1] flex h-svh flex-col pb-4 md:col-[3/-1]"
+                className="col-[1/-1] flex h-svh flex-col pb-4 lg:col-[3/-1]"
             >
                 <motion.div
                     initial={{ opacity: 0, y: -50 }}
