@@ -75,10 +75,10 @@ const Sidebar = () => {
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 1 }}
-            className="col-[1/3] flex"
+            className="col-[1/3] hidden md:flex"
         >
             <Iconbar />
-            <div className=" flex flex-grow flex-col gap-4 px-4">
+            <div className=" flex w-0 flex-grow flex-col gap-4 px-4">
                 <div className="mt-4 flex justify-between gap-4">
                     <h1 className="mr-auto text-3xl font-semibold">My Chats</h1>
                     <IconButton
@@ -96,7 +96,7 @@ const Sidebar = () => {
                         <HiDotsHorizontal />
                     </IconButton>
                 </div>
-                <div className="flex gap-4 rounded-lg bg-customNeutral p-1 *:rounded *:p-3 *:text-xs *:font-bold *:uppercase">
+                <div className="flex flex-wrap gap-4 rounded-lg bg-customNeutral p-1 *:rounded *:p-3 *:text-xs *:font-bold *:uppercase">
                     <motion.button
                         whileHover={{ backgroundColor: " hsl(263, 52%, 91%)" }}
                         whileTap={{ scale: 0.98 }}
@@ -135,7 +135,7 @@ const Sidebar = () => {
                             name="search"
                             id="search"
                             placeholder="Search"
-                            className=" flex-grow rounded-lg bg-customNeutral p-2 pl-10"
+                            className=" w-0 flex-grow rounded-lg bg-customNeutral p-2 pl-10"
                         />
                     </div>
                     <IconButton color="customGray" bgColor="customNeutral">

@@ -4,8 +4,6 @@ import { Chat } from "./";
 import { useSelector } from "react-redux";
 import { RootType } from "../store";
 
-import { BiDisc } from "react-icons/bi";
-
 const ChatsContainer = () => {
     const { currentChat, isLoading } = useSelector(
         (state: RootType) => state.chat!,
