@@ -39,6 +39,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 
 const Home = () => {
+    const BASE_URL = import.meta.env.VITE_BASE_URL;
     const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
     const genAI = new GoogleGenerativeAI(API_KEY);
 
@@ -200,7 +201,7 @@ const Home = () => {
 
         dispatch(setIsLoading({ isLoading: true }));
 
-        const url = "http://localhost:3000/api/v1/context";
+        const url = `${BASE_URL}/api/v1/context`;
         const axiosResponse = await axios.post(url, {
             prompt: prompt,
         });
