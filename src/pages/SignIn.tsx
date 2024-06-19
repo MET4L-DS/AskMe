@@ -62,11 +62,12 @@ const SignIn = () => {
                         <div className="flex items-center gap-2">
                             <img
                                 alt="logo"
-                                className=" aspect-square w-12 rounded-full p-1"
+                                src="/LawGPT.png"
+                                className=" aspect-square w-10 rounded-full p-1"
                             />
                             <div className="text-left text-xl font-bold">
-                                <span className="text-customGreen">Ask</span>
-                                <span className="text-black">Me</span>
+                                <span className="text-customGreen">Law</span>
+                                <span className="text-black">GPT</span>
                             </div>
                         </div>
 

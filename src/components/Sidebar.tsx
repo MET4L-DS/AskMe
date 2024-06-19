@@ -78,7 +78,7 @@ const Sidebar = () => {
             className="col-[1/3] hidden h-screen md:flex"
         >
             <Iconbar />
-            <div className=" flex w-0 flex-grow flex-col gap-4 px-4">
+            <div className=" flex w-0 flex-grow flex-col gap-4 px-4 pb-4">
                 <div className="mt-4 flex justify-between gap-4">
                     <h1 className="mr-auto text-3xl font-semibold">My Chats</h1>
                     <IconButton

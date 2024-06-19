@@ -299,7 +299,12 @@ const Home = () => {
                     className="flex items-center justify-between gap-4 p-4 "
                 >
                     <h2 className=" mr-auto line-clamp-1 text-3xl font-semibold">
-                        {currentChat[0]?.parts[0].text || "Ask Me"}
+                        {currentChat[0]?.parts[0].text || (
+                            <>
+                                <span className="text-customGreen">Law</span>
+                                <span>GPT</span>
+                            </>
+                        )}
                     </h2>
                     <IconButton color="customGray" bgColor="customNeutral">
                         <FaMagnifyingGlass />
@@ -331,13 +336,18 @@ const Home = () => {
                         </menu>
                     </div>
                 </motion.div>
-                <div className="no-scrollbar col-[1/-1] flex-grow overflow-y-scroll rounded-lg bg-customNeutral px-8 py-4 text-sm lg:px-32">
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 2 }}
+                    className="no-scrollbar col-[1/-1] flex-grow overflow-y-scroll rounded-lg bg-customNeutral px-8 py-4 text-sm lg:px-32"
+                >
                     <ChatsContainer />
                     <ChatBar
                         getResponse={getResponse}
                         textAndImagePromptRun={textAndImagePromptRun}
                     />
-                </div>
+                </motion.div>
             </motion.main>
         </>
     );
