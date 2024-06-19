@@ -41,6 +41,9 @@ const IconButton = ({
         "text-customDark400",
         "text-customDark500",
     ];
+
+    console.log(bgColorClasses, fgColorClasses);
+
     // const className = `text-${color} bg-${bgColor}`;
     return (
         <motion.button
