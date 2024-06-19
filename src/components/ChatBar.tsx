@@ -1,16 +1,57 @@
-import { FaImage, FaRegTrashCan } from "react-icons/fa6";
+import { FaRegTrashCan } from "react-icons/fa6";
 import { BiImageAdd } from "react-icons/bi";
-
-const ChatBar = ({
-    prompt,
+import { useDispatch, useSelector } from "react-redux";
+import { RootType } from "../store";
+import {
     setPrompt,
-    handleInput,
-    handleFileInput,
-    image,
     setImage,
-}) => {
+    setInlineImageData,
+} from "../features/chat/chatSlice";
+
+import { motion } from "framer-motion";
+import { memo } from "react";
+
+type CharBarProps = {
+    textAndImagePromptRun: () => void;
+    getResponse: () => void;
+};
+
+const ChatBar = ({ textAndImagePromptRun, getResponse }: CharBarProps) => {
+    const { prompt, image } = useSelector((state: RootType) => state.chat!);
+    const dispatch = useDispatch();
+
+    const handleInput = () => {
+        if (image) console.log("image is set");
+        image ? textAndImagePromptRun() : getResponse();
+
+        dispatch(setPrompt({ prompt: "" }));
+        dispatch(setImage({ image: undefined }));
+        dispatch(setInlineImageData({ data: undefined }));
+    };
+
+    const handleFileInput = (file: File) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+            if (reader.result !== null) {
+                const base64Img = reader.result as string;
+                dispatch(setImage({ image: base64Img }));
+                dispatch(
+                    setInlineImageData({
+                        data: {
+                            inlineData: {
+                                data: base64Img.split(",")[1],
+                                mimeType: file.type,
+                            },
+                        },
+                    }),
+                );
+            }
+        };
+    };
+
     return (
-        <div className="sticky bottom-4 col-[2/-2] grid gap-4 px-8">
+        <div className="sticky bottom-4 mt-20 grid gap-4">
             {image && (
                 <div className="relative w-fit">
                     <img
@@ -20,20 +61,23 @@ const ChatBar = ({
                     />
                     <FaRegTrashCan
                         className="absolute right-0 top-0 -translate-y-1/2 translate-x-1/2 cursor-pointer text-red-500"
-                        onClick={() => setImage("")}
+                        onClick={() => dispatch(setImage({ image: undefined }))}
                     />
                 </div>
             )}
 
             <div className="flex flex-grow items-center gap-4">
                 <div className=" relative flex flex-grow">
-                    <input
-                        className="flex-grow rounded-2xl bg-white p-4 pr-16 text-base font-semibold shadow-xl focus:outline-0"
+                    <motion.input
+                        whileFocus={{ outline: "2px solid hsl(262, 40%, 55%)" }}
+                        className="w-0 flex-grow rounded-2xl border-none bg-white p-4 pr-16 text-base font-semibold shadow-xl outline-none focus:border-none focus:outline-none"
                         type="text"
                         name="input"
                         id="input"
                         value={prompt}
-                        onChange={(e) => setPrompt(e.target.value)}
+                        onChange={(e) =>
+                            dispatch(setPrompt({ prompt: e.target.value }))
+                        }
                         onKeyDown={(e) => {
                             if (!prompt) return;
                             e.key === "Enter" && handleInput();
@@ -53,25 +97,33 @@ const ChatBar = ({
                     id="image"
                     accept="image/*"
                     onChange={(e) => {
-                        console.log(e.target.files[0]);
-                        handleFileInput(e.target.files[0]);
+                        if (e.target.files && e.target.files[0]) {
+                            console.log(e.target.files[0]);
+                            handleFileInput(e.target.files[0]);
+                        }
                     }}
                     className=" hidden"
                 />
 
-                <button
+                <motion.button
                     type="button"
-                    className="h-full rounded-2xl bg-white px-4 shadow-xl hover:text-customGreen active:bg-customGreen active:text-white "
+                    whileHover={{ backgroundColor: "hsl(263, 52%, 91%)" }}
+                    whileTap={{
+                        backgroundColor: "hsl(262, 40%, 55%)",
+                        color: "white",
+                        scale: 0.95,
+                    }}
+                    className="h-full rounded-2xl bg-white px-4 font-bold shadow-xl"
                     onClick={() => {
                         if (!prompt) return;
                         handleInput();
                     }}
                 >
                     Generate
-                </button>
+                </motion.button>
             </div>
         </div>
     );
 };
 
-export default ChatBar;
+export default memo(ChatBar);
