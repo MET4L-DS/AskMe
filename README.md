@@ -7,7 +7,6 @@ Ask Me is a comprehensive tool designed to provide legal advice based on Indian 
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Configuration](#configuration)
 - [Data Sources](#data-sources)
 - [Contributing](#contributing)
 - [License](#license)
@@ -25,19 +24,71 @@ Ask Me is an AI-powered platform that provides legal advice grounded in Indian l
 
 ## Installation
 
-To install and set up LegalAdvisor, follow these steps:
+To install and set up Ask Me, follow these steps:
 
 1. **Clone the repository:**
 ```bash
-   git clone https://github.com/YourUsername/LegalAdvisor.git
-   cd LegalAdvisor
+   git clone https://github.com/YourUsername/AskMe.git
+   cd AskMe
+```
 
-2. **Installing the dependencies:**
+## Usage
+After setting up the environment and installing the dependencies, you can start using Ask Me as follows:
+
+1. **Installing the dependencies**
+```bash 
+    npm i
+```
+2. **Run the app**
 ```bash
-   npm i
+    npm run app
+```
 
-3. **Run the appication**
+3. **Interact with the system:**
+
+  * Input your legal query or describe your legal scenario.
+  * Receive advice and guidance based on the provided information.
+
+## Data Sources
+
+Ask Me relies on authoritative legal texts and databases, including:
+  
+  * The Indian Penal Code (IPC)
+
+## Contributing
+
+We welcome contributions to enhance Ask Me! To contribute:
+
+1. Fork the repository
+2. Create a new branch
+
 ```bash
-   npm run app
+    git checkout -b feature/your-feature-name
+```
 
+3. Make your changes and commit them:
+
+```bash
+    git commit -m "Add some feature"
+```
+
+4. Push to the branch:
+
+```bash 
+    git push origin feature/your-feature-name
+```
+
+5. Create a pull request.
+
+Please ensure your code follows our coding standards and includes appropriate tests.
+
+## License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+## Contact 
+
+For any questions or feedback, please reach out to us at:
+
+  * Email: tomdevsikdar@gmail.com, parijatbhatt1@gmail.com
 
