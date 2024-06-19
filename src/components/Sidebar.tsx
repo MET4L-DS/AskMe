@@ -75,7 +75,7 @@ const Sidebar = () => {
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 1 }}
-            className="col-[1/3] hidden md:flex"
+            className="col-[1/3] hidden h-screen md:flex"
         >
             <Iconbar />
             <div className=" flex w-0 flex-grow flex-col gap-4 px-4">
@@ -160,7 +160,7 @@ const Sidebar = () => {
                                 }}
                                 whileTap={{ scale: 0.98 }}
                                 key={chat.id}
-                                className={`history-item-template relative grid min-h-20 gap-y-2 ${chat.id === currentChatId ? "" : ""} rounded-lg py-2 pr-4`}
+                                className={`history-item-template relative grid gap-y-2 ${chat.id === currentChatId ? "" : ""} rounded-lg py-2 pr-4`}
                                 onClick={() => {
                                     dispatch(setId({ id: chat.id }));
                                     dispatch(
