@@ -50,8 +50,8 @@ const SignUp = () => {
 
   return (
     <div className="col-span-7 flex min-h-screen flex-col items-center justify-center bg-gray-100 py-2">
-      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
-        <div className="flex w-2/3 max-w-4xl rounded-2xl bg-white shadow-2xl">
+      <main className="flex w-full flex-1 flex-col items-center justify-center text-center sm:w-2/3 sm:px-20 px-4">
+        <div className="flex w-full max-w-4xl rounded-2xl bg-white shadow-2xl">
           <div className="w-full p-5">
             <div className="flex items-center gap-2">
               <img
