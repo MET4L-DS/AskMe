@@ -1,4 +1,4 @@
-# Ask Me
+![Screenshot (39)](https://github.com/MET4L-DS/AskMe/assets/73418468/d308872a-d7f0-4a8d-bf8c-e5e1d63db118)# Ask Me
 
 Ask Me is a comprehensive tool designed to provide legal advice based on Indian laws and the Indian Penal Code (IPC). This project simulates a virtual lawyer, offering guidance and insights into various legal scenarios, helping users navigate through legal complexities with ease.
 
@@ -98,3 +98,8 @@ This project is licensed under the MIT License. See the LICENSE file for details
 For any questions or feedback, please reach out to us at:
 
 -   Email: tomdevsikdar@gmail.com, parijatbhatt1@gmail.com
+
+## Media
+![Screenshot (40)](https://github.com/MET4L-DS/AskMe/assets/73418468/5a4b0e9c-c007-49b4-be92-cdfce219b7ee)
+![Screenshot (41)](https://github.com/MET4L-DS/AskMe/assets/73418468/9359da3e-0f07-4b21-a9e7-7f9dace6e357)
+![Screenshot (43)](https://github.com/MET4L-DS/AskMe/assets/73418468/e4c2ba05-3a9c-47bf-821a-320b0e7fd877)
