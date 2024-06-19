@@ -28,11 +28,10 @@ const SignIn = () => {
             toast.success("User Logged In Successfully !!", {
                 position: "top-center",
             });
-            const timeout = setTimeout(()=>{
-              clearTimeout(timeout);
-              navigate("/");
-            },1000);
-
+            const timeout = setTimeout(() => {
+                clearTimeout(timeout);
+                navigate("/");
+            }, 1000);
         } catch (error: any) {
             console.log(error.message);
             toast.error("Invalid Credentials", { position: "bottom-center" });
@@ -47,10 +46,10 @@ const SignIn = () => {
                 toast.success("User Logged In Successfully !!", {
                     position: "top-center",
                 });
-                const timeout = setTimeout(()=>{
-                  clearTimeout(timeout);
-                  navigate("/");
-                },1000);
+                const timeout = setTimeout(() => {
+                    clearTimeout(timeout);
+                    navigate("/");
+                }, 1000);
             }
         });
     };
@@ -58,7 +57,7 @@ const SignIn = () => {
     return (
         <div className="col-span-7 flex min-h-screen flex-col items-center justify-center bg-gray-100 py-2">
             <main className="flex flex-1 flex-col items-center justify-center px-20 text-center">
-                <div className="flex rounded-2xl bg-white shadow-2xl flex-col sm:flex-row">
+                <div className="flex flex-col rounded-2xl bg-white shadow-2xl sm:flex-row">
                     <div className="p-5 px-20">
                         <div className="flex items-center gap-2">
                             <img
@@ -66,17 +65,17 @@ const SignIn = () => {
                                 className=" aspect-square w-12 rounded-full p-1"
                             />
                             <div className="text-left text-xl font-bold">
-                                <span className="text-blue-500">Ask</span>
+                                <span className="text-customGreen">Ask</span>
                                 <span className="text-black">Me</span>
                             </div>
                         </div>
 
                         <div className="py-10">
-                            <h2 className="mb-2 text-3xl font-bold text-blue-500">
+                            <h2 className="mb-2 text-3xl font-bold text-customGreen">
                                 Sign in to Account
                             </h2>
 
-                            <div className="mb-2 inline-block w-10 border-2 border-blue-500"></div>
+                            <div className="mb-2 inline-block w-10 border-2 border-customGreen"></div>
 
                             <div className="my-2 flex justify-center">
                                 <button
@@ -151,7 +150,7 @@ const SignIn = () => {
                                 </div>
                                 <a
                                     href="#"
-                                    className="m-10 inline-block rounded-full border-2 border-solid border-blue-500 px-14 py-2 font-bold text-blue-500 hover:bg-white hover:text-blue-500"
+                                    className="m-10 inline-block rounded-full border-2 border-solid border-customGreen px-14 py-2 font-bold text-customGreen hover:bg-white hover:text-customGreen"
                                     onClick={handleSubmit}
                                 >
                                     Sign in
@@ -160,18 +159,17 @@ const SignIn = () => {
                         </div>
                     </div>
 
-                    <div className="rounded-br-2xl rounded-tr-2xl bg-blue-500 px-12 py-36 text-white flex flex-col justify-center items-center">
+                    <div className="flex flex-col items-center justify-center rounded-br-2xl rounded-tr-2xl bg-customGreen px-12 py-36 text-white">
                         <h2 className="mb-2 text-3xl font-bold">Hi, there!</h2>
                         <div className="mb-4 inline-block w-10 border-2 border-white"></div>
                         <p className="mb-10 text-balance">
                             If you don't have an account yet,
                             <br />
-                            please sign up to
-                            create one.
+                            please sign up to create one.
                         </p>
-              
+
                         <Link to="/signup">
-                            <p className="inline-block rounded-full border-2 border-solid border-white px-12 py-2 font-bold text-white hover:bg-white hover:text-blue-500">
+                            <p className="inline-block rounded-full border-2 border-solid border-white px-12 py-2 font-bold text-white hover:bg-white hover:text-customGreen">
                                 Sign Up
                             </p>
                         </Link>
