@@ -288,7 +288,10 @@ const Home = () => {
     return (
         <>
             <Sidebar />
-            <main className="col-[3/-1] flex h-svh flex-col pb-4">
+            <motion.main
+                transition={{ duration: 0.5 }}
+                className="col-[1/-1] flex h-svh flex-col pb-4 md:col-[3/-1]"
+            >
                 <motion.div
                     initial={{ opacity: 0, y: -50 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -328,14 +331,14 @@ const Home = () => {
                         </menu>
                     </div>
                 </motion.div>
-                <div className="no-scrollbar col-[1/-1] flex-grow overflow-y-scroll rounded-lg bg-customNeutral px-32 py-4 text-sm">
+                <div className="no-scrollbar col-[1/-1] flex-grow overflow-y-scroll rounded-lg bg-customNeutral px-8 py-4 text-sm lg:px-32">
                     <ChatsContainer />
                     <ChatBar
                         getResponse={getResponse}
                         textAndImagePromptRun={textAndImagePromptRun}
                     />
                 </div>
-            </main>
+            </motion.main>
         </>
     );
 };

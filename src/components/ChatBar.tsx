@@ -70,7 +70,7 @@ const ChatBar = ({ textAndImagePromptRun, getResponse }: CharBarProps) => {
                 <div className=" relative flex flex-grow">
                     <motion.input
                         whileFocus={{ outline: "2px solid hsl(262, 40%, 55%)" }}
-                        className="flex-grow rounded-2xl border-none bg-white p-4 pr-16 text-base font-semibold shadow-xl outline-none focus:border-none focus:outline-none"
+                        className="w-0 flex-grow rounded-2xl border-none bg-white p-4 pr-16 text-base font-semibold shadow-xl outline-none focus:border-none focus:outline-none"
                         type="text"
                         name="input"
                         id="input"
