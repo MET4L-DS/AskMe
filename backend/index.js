@@ -10,9 +10,9 @@ const PORT = process.env.PORT || 3000;
 
 app.use(
 	cors({
-		origin: "https://law-gpt-context.vercel.app/",
-		methods: ["GET", "POST"],
-		credentials: true,
+		// origin: "https://law-gpt-context.vercel.app/",
+		// methods: ["GET", "POST"],
+		// credentials: true,
 	})
 );
 
