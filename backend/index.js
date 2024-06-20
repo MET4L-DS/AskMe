@@ -10,9 +10,8 @@ const PORT = process.env.PORT || 3000;
 
 app.use(
 	cors({
-		origin: "https://askme-a7qz.onrender.com/",
+		origin: "https://askme-a7qz.onrender.com",
 		methods: ["GET", "POST"],
-		credentials: true,
 	})
 );
 
