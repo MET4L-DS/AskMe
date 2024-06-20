@@ -8,15 +8,12 @@ import contextRouter from "./routes/context.js";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// app.use(
-// 	cors({
-// 		origin: "https://askme-a7qz.onrender.com",
-// 		methods: ["GET", "POST"],
-// 	})
-// );
 app.use(
 	cors({
-		origin: "https://main--law-gpt.netlify.app",
+		origin: [
+			"https://main--law-gpt.netlify.app",
+			"https://law-gpt.netlify.app",
+		],
 		methods: ["GET", "POST"],
 	})
 );
