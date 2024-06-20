@@ -5,5 +5,12 @@
 		{ "src": "*.py", "use": "@vercel/python" },
 		{ "src": "*.js", "use": "@vercel/node" }
 	],
-	"routes": [{ "src": "/(.*)", "dest": "/" }]
+	"routes": [
+		{
+			"src": "/(.*)",
+			"dest": "/",
+			"methods": ["GET", "POST"],
+			"headers": { "Access-Control-Allow-Origin": "*" }
+		}
+	]
 }
