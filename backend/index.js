@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 3000;
 // );
 app.use(
 	cors({
-		origin: "https://askme-a7qz.onrender.com/api/v1/context",
+		origin: "https://main--law-gpt.netlify.app",
 		methods: ["GET", "POST"],
 	})
 );
