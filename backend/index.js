@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(
 	cors({
-		origin: "https://law-gpt-context.vercel.app/",
+		origin: "https://askme-a7qz.onrender.com/",
 		methods: ["GET", "POST"],
 		credentials: true,
 	})
