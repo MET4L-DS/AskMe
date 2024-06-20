@@ -14,7 +14,12 @@ const PORT = process.env.PORT || 3000;
 // 		methods: ["GET", "POST"],
 // 	})
 // );
-app.use(cors());
+app.use(
+	cors({
+		origin: "https://askme-a7qz.onrender.com/api/v1/context",
+		methods: ["GET", "POST"],
+	})
+);
 
 app.use(express.json());
 app.use("/api/v1", contextRouter);
