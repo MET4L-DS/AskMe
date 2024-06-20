@@ -8,12 +8,13 @@ import contextRouter from "./routes/context.js";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(
-	cors({
-		origin: "https://askme-a7qz.onrender.com",
-		methods: ["GET", "POST"],
-	})
-);
+// app.use(
+// 	cors({
+// 		origin: "https://askme-a7qz.onrender.com",
+// 		methods: ["GET", "POST"],
+// 	})
+// );
+app.use(cors());
 
 app.use(express.json());
 app.use("/api/v1", contextRouter);
