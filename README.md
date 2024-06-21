@@ -1,6 +1,6 @@
-# Ask Me
+# LawGPT
 
-Ask Me is a comprehensive tool designed to provide legal advice based on Indian laws and the Indian Penal Code (IPC). This project simulates a virtual lawyer, offering guidance and insights into various legal scenarios, helping users navigate through legal complexities with ease.
+LawGPT is a comprehensive tool designed to provide legal advice based on Indian laws and the Indian Penal Code (IPC). This project simulates a virtual lawyer, offering guidance and insights into various legal scenarios, helping users navigate through legal complexities with ease.
 
 ## Table of Contents
 
@@ -15,7 +15,7 @@ Ask Me is a comprehensive tool designed to provide legal advice based on Indian 
 
 ## Introduction
 
-Ask Me is an AI-powered platform that provides legal advice grounded in Indian legal statutes, including the Indian Penal Code. It is designed to assist users by simulating a consultation with a lawyer, offering interpretations, potential legal outcomes, and procedural guidance on various legal matters.
+LawGPT is an AI-powered platform that provides legal advice grounded in Indian legal statutes, including the Indian Penal Code. It is designed to assist users by simulating a consultation with a lawyer, offering interpretations, potential legal outcomes, and procedural guidance on various legal matters.
 
 ## Features
 
@@ -26,7 +26,7 @@ Ask Me is an AI-powered platform that provides legal advice grounded in Indian l
 
 ## Installation
 
-To install and set up Ask Me, follow these steps:
+To install and set up LawGPT, follow these steps:
 
 1. **Clone the repository:**
 
@@ -37,7 +37,7 @@ To install and set up Ask Me, follow these steps:
 
 ## Usage
 
-After setting up the environment and installing the dependencies, you can start using Ask Me as follows:
+After setting up the environment and installing the dependencies, you can start using LawGPT as follows:
 
 1. **Installing the dependencies**
 
@@ -58,13 +58,13 @@ After setting up the environment and installing the dependencies, you can start 
 
 ## Data Sources
 
-Ask Me relies on authoritative legal texts and databases, including:
+LawGPT relies on authoritative legal texts and databases, including:
 
 -   The Indian Penal Code (IPC)
 
 ## Contributing
 
-We welcome contributions to enhance Ask Me! To contribute:
+We welcome contributions to enhance LawGPT! To contribute:
 
 1. Fork the repository
 2. Create a new branch
