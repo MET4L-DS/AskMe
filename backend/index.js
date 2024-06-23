@@ -7,8 +7,8 @@ import contextRouter from "./routes/context.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const CORS_ORIGIN_URL_1 = process.env.CORS_ORIGIN_URL_1 | "";
-const CORS_ORIGIN_URL_2 = process.env.CORS_ORIGIN_URL_2 | "";
+const CORS_ORIGIN_URL_1 = process.env.CORS_ORIGIN_URL_1 || "";
+const CORS_ORIGIN_URL_2 = process.env.CORS_ORIGIN_URL_2 || "";
 
 app.use(
 	cors({
