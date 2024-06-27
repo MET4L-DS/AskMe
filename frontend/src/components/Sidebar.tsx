@@ -15,7 +15,7 @@ import {
     setCurrentChat,
     setIsLoading,
 } from "../features/chat/chatSlice";
-import { memo, useEffect } from "react";
+import { memo, useEffect, useState } from "react";
 
 import { motion } from "framer-motion";
 
@@ -26,6 +26,8 @@ const Sidebar = () => {
     const dispatch = useDispatch();
 
     const historyCollectionRef = collection(db, "chat_histories");
+
+    const [saved, setSaved] = useState(false);
 
     const getData = async () => {
         try {
@@ -42,12 +44,18 @@ const Sidebar = () => {
                 const createdAt = new Date(
                     chatData.createdAt.toDate(),
                 ).getTime();
-                console.log(chatId);
 
-                return { id: chatId, chats: prevChats, timestamp: createdAt };
+                return {
+                    id: chatId,
+                    chats: prevChats,
+                    timestamp: createdAt,
+                    saved: chatData.saved,
+                };
             });
 
             if (docSnap) {
+                console.log(chatHistory);
+
                 dispatch(setAllChats({ allChats: chatHistory }));
             } else {
                 // doc.data() will be undefined in this case
@@ -90,26 +98,58 @@ const Sidebar = () => {
                 </div>
                 <div className="flex flex-wrap gap-4 rounded-lg bg-customNeutral p-1 *:rounded *:p-3 *:text-xs *:font-bold *:uppercase">
                     <motion.button
-                        whileHover={{ backgroundColor: " hsl(263, 52%, 91%)" }}
+                        // whileHover={{ backgroundColor: " hsl(263, 52%, 91%)" }}
                         whileTap={{ scale: 0.98 }}
-                        className=" flex flex-grow items-center justify-center gap-1 bg-white text-customGreen"
+                        className={` relative flex flex-grow items-center justify-center gap-1 ${saved == false ? " text-customGreen " : ""}`}
                         type="button"
+                        onClick={() => {
+                            setSaved(false);
+                        }}
                     >
-                        <IoChatbubble />
-                        <span onClick={() => console.log(allChats)}>Chats</span>
-                        <span className=" rounded bg-customLightGreen px-1">
+                        {saved === false && (
+                            <motion.div
+                                layoutId="active-section"
+                                className=" absolute left-0 top-0 h-full w-full rounded-lg bg-white"
+                            />
+                        )}
+                        <IoChatbubble className=" z-10" />
+                        <span
+                            onClick={() => console.log(allChats)}
+                            className="z-10"
+                        >
+                            Chats
+                        </span>
+                        <span
+                            className={` z-10 rounded ${saved == false ? "bg-customLightGreen" : "bg-customGray"} px-1`}
+                        >
                             {allChats.length}
                         </span>
                     </motion.button>
                     <motion.button
-                        whileHover={{ backgroundColor: " hsl(263, 52%, 91%)" }}
+                        // whileHover={{ backgroundColor: " hsl(263, 52%, 91%)" }}
                         whileTap={{ scale: 0.98 }}
-                        className=" flex flex-grow items-center justify-center gap-1"
+                        className={` relative flex flex-grow items-center justify-center gap-1 ${saved == true ? " text-customGreen " : ""}`}
                         type="button"
+                        onClick={() => {
+                            setSaved(true);
+                        }}
                     >
-                        <FaBookmark />
-                        <span>Saved</span>
-                        <span className=" rounded bg-customGray px-1">24</span>
+                        {saved === true && (
+                            <motion.div
+                                layoutId="active-section"
+                                className=" absolute left-0 top-0 h-full w-full rounded-lg bg-white"
+                            />
+                        )}
+                        <FaBookmark className=" z-10" />
+                        <span className="z-10">Saved</span>
+                        <span
+                            className={` z-10 rounded ${saved == true ? "bg-customLightGreen" : "bg-customGray"} px-1`}
+                        >
+                            {
+                                allChats.filter((chat) => chat.saved == true)
+                                    .length
+                            }
+                        </span>
                     </motion.button>
                 </div>
                 <div className="flex gap-2">
@@ -136,6 +176,9 @@ const Sidebar = () => {
                 </div>
                 <div className=" no-scrollbar flex flex-grow flex-col gap-2 overflow-y-scroll">
                     {allChats?.map((chat, index) => {
+                        if (saved && chat.saved == false) {
+                            return;
+                        }
                         return (
                             <SidebarChatItem
                                 key={chat.id}
@@ -144,6 +187,7 @@ const Sidebar = () => {
                                 currentChatId={currentChatId}
                                 timestamp={chat.timestamp}
                                 index={index}
+                                saved={chat.saved}
                             />
                         );
                     })}

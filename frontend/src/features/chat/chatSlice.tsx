@@ -4,6 +4,7 @@ import { HistoryType, InlineImageType } from "../../types";
 export type ChatType = {
     id: string;
     currentChat: HistoryType[] | [];
+    currentSaved: boolean;
     prompt: string;
     isLoading: boolean;
     image?: string;
@@ -13,6 +14,7 @@ export type ChatType = {
 const initialState: ChatType = {
     id: "",
     currentChat: [],
+    currentSaved: false,
     prompt: "",
     isLoading: false,
     image: undefined,
@@ -31,6 +33,9 @@ const chatSlice = createSlice({
         },
         setCurrentChat(state, action) {
             state.currentChat = action.payload.currentChat;
+        },
+        setCurrentSaved(state, action) {
+            state.currentSaved = action.payload.currentSaved;
         },
         setLastChatText(state, action) {
             state.currentChat[state.currentChat.length - 1].parts[0].text =
@@ -59,6 +64,7 @@ export const {
     setId,
     setPrompt,
     setCurrentChat,
+    setCurrentSaved,
     setLastChatText,
     appendChat,
     setIsLoading,

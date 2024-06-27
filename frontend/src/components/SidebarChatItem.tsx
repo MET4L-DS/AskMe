@@ -1,8 +1,13 @@
 import { motion } from "framer-motion";
 import { useDispatch } from "react-redux";
-import { setId, setCurrentChat } from "../features/chat/chatSlice";
+import {
+    setId,
+    setCurrentChat,
+    setCurrentSaved,
+} from "../features/chat/chatSlice";
 
 import { FaPenFancy } from "react-icons/fa6";
+import { memo } from "react";
 
 type TypeSidebarChatItem = {
     id: string;
@@ -10,6 +15,7 @@ type TypeSidebarChatItem = {
     currentChatId: string;
     timestamp: number;
     index: number;
+    saved: boolean;
 };
 const SidebarChatItem = ({
     id,
@@ -17,6 +23,7 @@ const SidebarChatItem = ({
     currentChatId,
     timestamp,
     index,
+    saved,
 }: TypeSidebarChatItem) => {
     const dispatch = useDispatch();
 
@@ -50,6 +57,7 @@ const SidebarChatItem = ({
                         currentChat: chats,
                     }),
                 );
+                dispatch(setCurrentSaved({ currentSaved: saved }));
             }}
         >
             {id === currentChatId && (
@@ -81,4 +89,4 @@ const SidebarChatItem = ({
         </motion.div>
     );
 };
-export default SidebarChatItem;
+export default memo(SidebarChatItem);

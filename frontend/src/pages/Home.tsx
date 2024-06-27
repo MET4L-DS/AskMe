@@ -10,7 +10,12 @@ import { ChatsContainer, ChatBar, IconButton, Sidebar } from "../components";
 
 import { HistoryType, InlineImageType, ContextType } from "../types";
 
-import { FaMagnifyingGlass, FaTrashCan } from "react-icons/fa6";
+import {
+    FaMagnifyingGlass,
+    FaTrashCan,
+    FaBookmark,
+    FaRegBookmark,
+} from "react-icons/fa6";
 import { HiDotsHorizontal } from "react-icons/hi";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -18,6 +23,7 @@ import {
     setLastChatText,
     setIsLoading,
     setCurrentChat,
+    setCurrentSaved,
     setId,
 } from "../features/chat/chatSlice";
 import { RootType } from "../store";
@@ -31,7 +37,11 @@ import {
     deleteDoc,
     Timestamp,
 } from "firebase/firestore";
-import { updateIndividualChat, setAllChats } from "../features/main/mainSlice";
+import {
+    updateIndividualChat,
+    setAllChats,
+    setSaved,
+} from "../features/main/mainSlice";
 import { setUser } from "../features/user/userSlice";
 
 import { onAuthStateChanged } from "firebase/auth";
@@ -70,6 +80,7 @@ const Home = () => {
         id: chatId,
         currentChat,
         inlineImageData,
+        currentSaved,
     } = useSelector((state: RootType) => state.chat!);
 
     const { id: userId } = useSelector((state: RootType) => state.user!);
@@ -97,6 +108,7 @@ const Home = () => {
                 chats: chats,
                 userId: userId,
                 createdAt: Timestamp.now(),
+                saved: false,
             });
             console.log("Chat History Doc: ", chatHistoryDoc);
             return chatHistoryDoc;
@@ -139,6 +151,19 @@ const Home = () => {
             await updateDoc(chatHistoryDoc, {
                 chats: chats,
                 createdAt: Timestamp.now(),
+            });
+            console.log("Updating DONE");
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const updateSavedInFirestore = async (saved: boolean) => {
+        try {
+            console.log("Updating Saved: ", currentSaved);
+            const chatHistoryDoc = doc(db, "chat_histories", chatId);
+            await updateDoc(chatHistoryDoc, {
+                saved: saved,
             });
             console.log("Updating DONE");
         } catch (error) {
@@ -340,12 +365,36 @@ const Home = () => {
                                 onClick={() => {
                                     deleteChatsInStore();
                                     deleteChatsInFirestore();
+                                    setIsMenuOpen(!isMenuOpen);
                                 }}
                             >
                                 {" "}
                                 <FaTrashCan /> Delete
                             </button>
-                            <button type="button">Edit</button>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    dispatch(
+                                        setSaved({
+                                            id: chatId,
+                                            saved: !currentSaved,
+                                        }),
+                                    );
+                                    dispatch(
+                                        setCurrentSaved({
+                                            currentSaved: !currentSaved,
+                                        }),
+                                    );
+                                    updateSavedInFirestore(!currentSaved);
+                                }}
+                            >
+                                {currentSaved ? (
+                                    <FaBookmark />
+                                ) : (
+                                    <FaRegBookmark />
+                                )}
+                                {currentSaved ? "Unsave" : "Save"}
+                            </button>
                         </menu>
                     </div>
                 </motion.div>
