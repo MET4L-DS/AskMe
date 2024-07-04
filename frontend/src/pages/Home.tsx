@@ -246,7 +246,7 @@ const Home = () => {
         console.log("Page Context: ", context);
 
         const promptWithContext = `
-        Answer the question by extracting relevant information on Indian Penal Code provided in the CONTEXT below. Highlight the Sections of Indian Penal Code that are applicable in your responses. Do not use the word 'context' in your responses. If the question is not related, just say "Question is irrelevant".
+        Answer the question by extracting relevant information on The Bharatiya Nyaya Sanhita (BNS) provided in the CONTEXT below. Highlight the Sections of The Bharatiya Nyaya Sanhita (BNS) that are applicable in your responses. Do not use the word 'context' in your responses. If the question is not related, just say "Question is irrelevant".
 
         CONTEXT:${context}
 
