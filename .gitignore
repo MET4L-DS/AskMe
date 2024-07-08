@@ -8,7 +8,7 @@ lerna-debug.log*
 .pnpm-debug.log*
 
 code_context.txt
-get_code_context.sh
+code_context.sh
 .gitignore
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
