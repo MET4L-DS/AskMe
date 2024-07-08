@@ -13,6 +13,7 @@ import { memo, useState } from "react";
 import { signOut } from "firebase/auth";
 import { auth } from "../configs/firebase";
 import { setUser } from "../features/user/userSlice";
+import { toast } from "react-toastify";
 
 const Iconbar = () => {
     const [showLogoutDialog, setShowLogoutDialog] = useState(false);
@@ -20,7 +21,7 @@ const Iconbar = () => {
     const handleLogout = async () => {
         try {
             const user = await signOut(auth);
-            alert("Logged out successfully");
+            toast.success("Logged out successfully !!");
             console.log(user);
 
             dispatch(setUser({ id: null, email: null }));
