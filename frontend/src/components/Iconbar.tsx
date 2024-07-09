@@ -21,7 +21,9 @@ const Iconbar = () => {
     const handleLogout = async () => {
         try {
             const user = await signOut(auth);
-            toast.success("Logged out successfully !!");
+            toast.success("Logged out successfully !!",{
+                position: "top-center",
+            });
             console.log(user);
 
             dispatch(setUser({ id: null, email: null }));
@@ -116,7 +118,7 @@ const Iconbar = () => {
                                 </button>
                                 <button
                                     onClick={handleLogout}
-                                    className="middle none center rounded-lg bg-gradient-to-tr from-green-600 to-green-400 px-6 py-3 font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                                    className="middle none center rounded-lg bg-gradient-to-tr from-customAccent to-customAccent/90 px-6 py-3 font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                                 >
                                     Confirm
                                 </button>
