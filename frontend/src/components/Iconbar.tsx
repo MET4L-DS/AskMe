@@ -112,7 +112,7 @@ const Iconbar = () => {
                             <div className="text-blue-gray-500 flex shrink-0 flex-wrap items-center justify-end p-4">
                                 <button
                                     onClick={() => setShowLogoutDialog(false)}
-                                    className="middle none center mr-1 rounded-lg px-6 py-3 font-sans text-xs font-bold uppercase text-red-500 transition-all hover:bg-red-500/10 active:bg-red-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                                    className="middle none center mr-1 rounded-lg px-6 py-3 font-sans text-xs font-bold uppercase transition-all hover:bg-red-500/10 active:bg-red-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                                 >
                                     Cancel
                                 </button>
