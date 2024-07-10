@@ -14,6 +14,8 @@ import { signOut } from "firebase/auth";
 import { auth } from "../configs/firebase";
 import { setUser } from "../features/user/userSlice";
 import { toast } from "react-toastify";
+import { setAllChats } from "../features/main/mainSlice";
+import { setCurrentChat, setId } from "../features/chat/chatSlice";
 
 const Iconbar = () => {
     const [showLogoutDialog, setShowLogoutDialog] = useState(false);
@@ -27,6 +29,9 @@ const Iconbar = () => {
             console.log(user);
 
             dispatch(setUser({ id: null, email: null }));
+            dispatch(setAllChats({allChats:[]})); 
+            dispatch(setCurrentChat({ currentChat: [] })); 
+            dispatch(setId({ id: "" }));            
             setShowLogoutDialog(false);
         } catch (error) {
             console.error(error);
