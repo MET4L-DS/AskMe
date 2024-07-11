@@ -175,22 +175,28 @@ const Sidebar = () => {
                     </IconButton>
                 </div>
                 <div className=" no-scrollbar flex flex-grow flex-col gap-2 overflow-y-scroll">
-                    {allChats?.map((chat, index) => {
-                        if (saved && chat.saved == false) {
-                            return;
-                        }
-                        return (
-                            <SidebarChatItem
-                                key={chat.id}
-                                id={chat.id}
-                                chats={chat.chats}
-                                currentChatId={currentChatId}
-                                timestamp={chat.timestamp}
-                                index={index}
-                                saved={chat.saved}
-                            />
-                        );
-                    })}
+                    {allChats.length > 0 ? (
+                        allChats?.map((chat, index) => {
+                            if (saved && chat.saved == false) {
+                                return;
+                            }
+                            return (
+                                <SidebarChatItem
+                                    key={chat.id}
+                                    id={chat.id}
+                                    chats={chat.chats}
+                                    currentChatId={currentChatId}
+                                    timestamp={chat.timestamp}
+                                    index={index}
+                                    saved={chat.saved}
+                                />
+                            );
+                        })
+                    ) : (
+                        <div className="mt-4 text-center text-gray-500">
+                            No chat history available.
+                        </div>
+                    )}
                 </div>
             </div>
         </motion.aside>

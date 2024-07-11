@@ -14,6 +14,8 @@ import { signOut } from "firebase/auth";
 import { auth } from "../configs/firebase";
 import { setUser } from "../features/user/userSlice";
 import { toast } from "react-toastify";
+import { setAllChats } from "../features/main/mainSlice";
+import { setCurrentChat, setId } from "../features/chat/chatSlice";
 
 const Iconbar = () => {
     const [showLogoutDialog, setShowLogoutDialog] = useState(false);
@@ -21,10 +23,15 @@ const Iconbar = () => {
     const handleLogout = async () => {
         try {
             const user = await signOut(auth);
-            toast.success("Logged out successfully !!");
+            toast.success("Logged out successfully !!",{
+                position: "top-center",
+            });
             console.log(user);
 
             dispatch(setUser({ id: null, email: null }));
+            dispatch(setAllChats({allChats:[]})); 
+            dispatch(setCurrentChat({ currentChat: [] })); 
+            dispatch(setId({ id: "" }));            
             setShowLogoutDialog(false);
         } catch (error) {
             console.error(error);
@@ -110,13 +117,13 @@ const Iconbar = () => {
                             <div className="text-blue-gray-500 flex shrink-0 flex-wrap items-center justify-end p-4">
                                 <button
                                     onClick={() => setShowLogoutDialog(false)}
-                                    className="middle none center mr-1 rounded-lg px-6 py-3 font-sans text-xs font-bold uppercase text-red-500 transition-all hover:bg-red-500/10 active:bg-red-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                                    className="middle none center mr-1 rounded-lg px-6 py-3 font-sans text-xs font-bold uppercase transition-all hover:bg-red-500/10 active:bg-red-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     onClick={handleLogout}
-                                    className="middle none center rounded-lg bg-gradient-to-tr from-green-600 to-green-400 px-6 py-3 font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                                    className="middle none center rounded-lg bg-gradient-to-tr from-customAccent to-customAccent/90 px-6 py-3 font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                                 >
                                     Confirm
                                 </button>
