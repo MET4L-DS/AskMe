@@ -42,9 +42,9 @@ const IconButton = ({
         "text-customDark500",
     ];
 
-    console.log(bgColorClasses, fgColorClasses);
+    let bgfg = [...bgColorClasses, ...fgColorClasses];
+    bgfg = ["Only to trick typescript."];
 
-    // const className = `text-${color} bg-${bgColor}`;
     return (
         <motion.button
             whileHover={{ scale: 1.1 }}

@@ -10,7 +10,12 @@ import { ChatsContainer, ChatBar, IconButton, Sidebar } from "../components";
 
 import { HistoryType, InlineImageType, ContextType } from "../types";
 
-import { FaMagnifyingGlass, FaTrashCan } from "react-icons/fa6";
+import {
+    FaMagnifyingGlass,
+    FaTrashCan,
+    FaBookmark,
+    FaRegBookmark,
+} from "react-icons/fa6";
 import { HiDotsHorizontal } from "react-icons/hi";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -18,6 +23,7 @@ import {
     setLastChatText,
     setIsLoading,
     setCurrentChat,
+    setCurrentSaved,
     setId,
 } from "../features/chat/chatSlice";
 import { RootType } from "../store";
@@ -29,8 +35,13 @@ import {
     updateDoc,
     addDoc,
     deleteDoc,
+    Timestamp,
 } from "firebase/firestore";
-import { updateIndividualChat, setAllChats } from "../features/main/mainSlice";
+import {
+    updateIndividualChat,
+    setAllChats,
+    setSaved,
+} from "../features/main/mainSlice";
 import { setUser } from "../features/user/userSlice";
 
 import { onAuthStateChanged } from "firebase/auth";
@@ -69,6 +80,7 @@ const Home = () => {
         id: chatId,
         currentChat,
         inlineImageData,
+        currentSaved,
     } = useSelector((state: RootType) => state.chat!);
 
     const { id: userId } = useSelector((state: RootType) => state.user!);
@@ -95,6 +107,8 @@ const Home = () => {
             const chatHistoryDoc = await addDoc(chatHistoriesRef, {
                 chats: chats,
                 userId: userId,
+                createdAt: Timestamp.now(),
+                saved: false,
             });
             console.log("Chat History Doc: ", chatHistoryDoc);
             return chatHistoryDoc;
@@ -134,7 +148,23 @@ const Home = () => {
             console.log("Updating Chats: ", chats);
 
             const chatHistoryDoc = doc(db, "chat_histories", chatId);
-            await updateDoc(chatHistoryDoc, { chats: chats });
+            await updateDoc(chatHistoryDoc, {
+                chats: chats,
+                createdAt: Timestamp.now(),
+            });
+            console.log("Updating DONE");
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const updateSavedInFirestore = async (saved: boolean) => {
+        try {
+            console.log("Updating Saved: ", currentSaved);
+            const chatHistoryDoc = doc(db, "chat_histories", chatId);
+            await updateDoc(chatHistoryDoc, {
+                saved: saved,
+            });
             console.log("Updating DONE");
         } catch (error) {
             console.log(error);
@@ -216,7 +246,7 @@ const Home = () => {
         console.log("Page Context: ", context);
 
         const promptWithContext = `
-        Answer the question by extracting relevant information on Indian Penal Code provided in the CONTEXT below. Highlight the Sections of Indian Penal Code that are applicable in your responses. Do not use the word 'context' in your responses. If the question is not related, just say "Question is irrelevant".
+        Answer the question by extracting relevant information on The Bharatiya Nyaya Sanhita (BNS) provided in the CONTEXT below. Highlight the Sections of The Bharatiya Nyaya Sanhita (BNS) that are applicable in your responses. Do not use the word 'context' in your responses. If the question is not related, just say "Question is irrelevant".
 
         CONTEXT:${context}
 
@@ -264,6 +294,7 @@ const Home = () => {
                 updateIndividualChat({
                     id: chatId,
                     chats: [...updatedChat],
+                    timestamp: new Date(Timestamp.now().toDate()).getTime(),
                 }),
             );
         } else {
@@ -277,7 +308,13 @@ const Home = () => {
                     setAllChats({
                         allChats: [
                             ...allChats,
-                            { id: chatDoc?.id, chats: updatedChat },
+                            {
+                                id: chatDoc?.id,
+                                chats: updatedChat,
+                                timestamp: new Date(
+                                    Timestamp.now().toDate(),
+                                ).getTime(),
+                            },
                         ],
                     }),
                 );
@@ -311,7 +348,7 @@ const Home = () => {
                         <FaMagnifyingGlass />
                     </IconButton>
                     <div className=" relative">
-                        <div className=" relative z-10">
+                        <div className=" relative z-20">
                             <IconButton
                                 color="customGray"
                                 bgColor="customNeutral"
@@ -321,19 +358,43 @@ const Home = () => {
                             </IconButton>
                         </div>
                         <menu
-                            className={` absolute right-0 top-0 grid origin-top-right gap-4 rounded-lg bg-white p-4 py-20 pb-4 text-white transition-all duration-500 *:flex *:items-center *:justify-center *:gap-1 *:rounded-lg *:bg-customGreen *:p-4 *:py-2 ${isMenuOpen ? "scale-100" : "scale-0"}`}
+                            className={` absolute right-0 top-0 z-10 grid origin-top-right gap-4 rounded-lg bg-white p-4 py-20 pb-4 text-white transition-all duration-500 *:flex *:items-center *:justify-center *:gap-1 *:rounded-lg *:bg-customGreen *:p-4 *:py-2 ${isMenuOpen ? "scale-100" : "scale-0"}`}
                         >
                             <button
                                 type="button"
                                 onClick={() => {
                                     deleteChatsInStore();
                                     deleteChatsInFirestore();
+                                    setIsMenuOpen(!isMenuOpen);
                                 }}
                             >
                                 {" "}
                                 <FaTrashCan /> Delete
                             </button>
-                            <button type="button">Edit</button>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    dispatch(
+                                        setSaved({
+                                            id: chatId,
+                                            saved: !currentSaved,
+                                        }),
+                                    );
+                                    dispatch(
+                                        setCurrentSaved({
+                                            currentSaved: !currentSaved,
+                                        }),
+                                    );
+                                    updateSavedInFirestore(!currentSaved);
+                                }}
+                            >
+                                {currentSaved ? (
+                                    <FaBookmark />
+                                ) : (
+                                    <FaRegBookmark />
+                                )}
+                                {currentSaved ? "Unsave" : "Save"}
+                            </button>
                         </menu>
                     </div>
                 </motion.div>
