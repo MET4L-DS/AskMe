@@ -105,5 +105,4 @@ For any questions or feedback, please reach out to us at:
 ![Screenshot (43)](https://github.com/MET4L-DS/AskMe/assets/73418468/e4c2ba05-3a9c-47bf-821a-320b0e7fd877)
 
 ## Video
-[https://github.com/MET4L-DS/AskMe/assets/73418468/432f6097-79ae-4863-a4af-67d543e596e1](https://github.com/user-attachments/assets/75a66a82-c61e-4111-91eb-ac8a82dd2a01
-)
+https://github.com/user-attachments/assets/75a66a82-c61e-4111-91eb-ac8a82dd2a01
