@@ -1,4 +1,5 @@
 # JUSTIFIED
+![justified](https://github.com/user-attachments/assets/53151992-d665-4d5f-a6b8-663834b58272)
 
 JUSTIFIED is a comprehensive tool designed to provide legal advice based on Indian laws and the Indian Penal Code (IPC). This project simulates a virtual lawyer, offering guidance and insights into various legal scenarios, helping users navigate through legal complexities with ease.
 
