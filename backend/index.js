@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import contextRouter from "./routes/context.js";
+import geminiRouter from "./routes/context.js"; 
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -19,6 +20,7 @@ app.use(
 
 app.use(express.json());
 app.use("/api/v1", contextRouter);
+app.use("/api/v1", geminiRouter);
 app.listen(PORT, () => {
 	console.log(`Server running`);
 });

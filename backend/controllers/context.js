@@ -6,29 +6,29 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const getContext = async (req, res) => {
-	const { prompt } = req.body;
+  const { prompt } = req.body;
 
-	try {
-		console.log(prompt);
-		console.log("GOOGLE_API_KEY", process.env.GOOGLE_API_KEY);
+  try {
+    console.log(prompt);
+    // console.log("GOOGLE_API_KEY", process.env.GOOGLE_API_KEY);
 
-		const embeddings = new GoogleGenerativeAIEmbeddings({
-			apiKey: process.env.GOOGLE_API_KEY,
-			model: "text-embedding-004", // 768 dimensions
-			taskType: TaskType.RETRIEVAL_DOCUMENT,
-		});
+    const embeddings = new GoogleGenerativeAIEmbeddings({
+      apiKey: process.env.GOOGLE_API_KEY,
+      model: "text-embedding-004", // 768 dimensions
+      taskType: TaskType.RETRIEVAL_DOCUMENT,
+    });
 
-		const directory = "./BNSVectorStore";
+    const directory = "./BNSVectorStore";
 
-		const vectorStore = await FaissStore.load(directory, embeddings);
+    const vectorStore = await FaissStore.load(directory, embeddings);
 
-		const data = await vectorStore.similaritySearch(prompt, 100);
+    const data = await vectorStore.similaritySearch(prompt, 100);
 
-		console.log(data);
-		res.status(200).json({ prompt: prompt, data: data });
-	} catch (error) {
-		res.status(500).json({ msg: error.message });
-	}
+    console.log(data);
+    res.status(200).json({ prompt: prompt, data: data });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
 };
 
 export { getContext };

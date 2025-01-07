@@ -1,6 +1,6 @@
 import express from "express";
-
 import { getContext } from "../controllers/context.js";
+import { getGeminiResponse } from "../controllers/geminiController.js";
 
 const router = express.Router();
 
@@ -9,5 +9,6 @@ router.get("/context", (req, res) => {
 });
 
 router.post("/context", getContext);
+router.post("/gemini", getGeminiResponse);
 
 export default router;
