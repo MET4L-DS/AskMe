@@ -43,14 +43,14 @@ export const addChatsInFirestore = async (
 ) => {
     const chatHistoriesRef = collection(db, "chat_histories");
     try {
-        console.log("Adding Chats: ", chats);
+        // console.log("Adding Chats: ", chats);
         const chatHistoryDoc = await addDoc(chatHistoriesRef, {
             chats: chats,
             userId: userId,
             createdAt: Timestamp.now(),
             saved: false,
         });
-        console.log("Chat History Doc: ", chatHistoryDoc);
+        // console.log("Chat History Doc: ", chatHistoryDoc);
         return chatHistoryDoc;
     } catch (error) {
         console.log(error);

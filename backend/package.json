@@ -12,7 +12,7 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"@langchain/community": "^0.2.12",
+		"@langchain/community": "^0.2.33",
 		"@langchain/google-genai": "^0.0.19",
 		"cors": "^2.8.5",
 		"dotenv": "^16.4.5",

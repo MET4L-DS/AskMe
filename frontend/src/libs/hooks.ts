@@ -84,6 +84,8 @@ export const useChat = () => {
             .map((context) => context.pageContent)
             .join("\n\n");
 
+        console.log("CONTEXT : \n", context);
+
         const promptWithContext = `
         Answer the question by extracting relevant information on The Bharatiya Nyaya Sanhita (BNS) provided in the CONTEXT below. Highlight the Sections of The Bharatiya Nyaya Sanhita (BNS) that are applicable in your responses. Do not use the word 'context' in your responses. If the question is not related, just say "Question is irrelevant".
 
