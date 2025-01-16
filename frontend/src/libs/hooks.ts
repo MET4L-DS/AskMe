@@ -14,6 +14,7 @@ import {
     createGenerativeAI,
     addChatsInFirestore,
     updateChatsInFirestore,
+    safetySettings,
 } from "./utils";
 import { Timestamp } from "firebase/firestore";
 
@@ -64,7 +65,10 @@ export const useChat = () => {
     };
 
     const getResponse = async () => {
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const model = genAI.getGenerativeModel({
+            model: "gemini-1.5-flash",
+            safetySettings: safetySettings,
+        });
         let newChat: HistoryType[] = [
             { role: "user", parts: [{ text: prompt }] },
         ];

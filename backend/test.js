@@ -34,7 +34,7 @@ const promptWithContextPrompt = PromptTemplate.fromTemplate(
 
 const llm = new ChatGoogleGenerativeAI({
 	apiKey: process.env.GOOGLE_API_KEY,
-	model: "gemini-pro",
+	model: "gemini-1.5-flash",
 });
 
 const standaloneQuestionChain = RunnableSequence.from([
@@ -45,15 +45,16 @@ const standaloneQuestionChain = RunnableSequence.from([
 
 const embedding = new GoogleGenerativeAIEmbeddings({
 	apiKey: process.env.GOOGLE_API_KEY,
+	model: "text-embedding-004",
 });
 const vectorStore = await FaissStore.load("./BNSVectorStore", embedding);
 const retriever = vectorStore.asRetriever(100);
 
-// const retrivalChain = RunnableSequence.from([
-// 	(prevResult) => prevResult.standaloneQuestion,
-// 	retriever,
-// 	(content) => content.map((content) => content.pageContent).join("\n\n"),
-// ]);
+const retrivalChain = RunnableSequence.from([
+	(prevResult) => prevResult.standaloneQuestion,
+	retriever,
+	(content) => content.map((content) => content.pageContent).join("\n\n"),
+]);
 
 const answerChain = RunnableSequence.from([
 	promptWithContextPrompt,
@@ -61,46 +62,9 @@ const answerChain = RunnableSequence.from([
 	new StringOutputParser(),
 ]);
 
-// const chain = RunnableSequence.from([
-// 	{
-// 		standaloneQuestion: standaloneQuestionChain,
-// 		originalInput: new RunnablePassthrough(),
-// 	},
-// 	(prevResult) => {
-// 		console.log(prevResult);
-// 		return prevResult;
-// 	},
-// 	{
-// 		context: retrivalChain,
-// 		prompt: ({ originalInput }) => originalInput.prompt,
-// 	},
-// 	(prevResult) => {
-// 		console.log(prevResult);
-// 		return prevResult;
-// 	},
-// 	answerChain,
-// ]);
-
-// const response = await chain.invoke({
-// 	prompt: "What are the laws for theft?",
-// });
-// console.log({ response });
-
-const retrieverChain = RunnableSequence.from([
-	(prevResult) => {
-		// console.log(prevResult);
-		return prevResult.originalInput.prompt;
-	},
-	retriever,
-	(content) => content.map((content) => content.pageContent).join("\n\n"),
-]);
-
 const chain = RunnableSequence.from([
-	(prevResult) => {
-		console.log(prevResult);
-		return prevResult;
-	},
 	{
+		standaloneQuestion: standaloneQuestionChain,
 		originalInput: new RunnablePassthrough(),
 	},
 	(prevResult) => {
@@ -108,13 +72,9 @@ const chain = RunnableSequence.from([
 		return prevResult;
 	},
 	{
-		context: retrieverChain,
-		prompt: ({ originalInput }) => {
-			// console.log(originalInput, originalInput.prompt);
-			return originalInput.prompt;
-		},
+		context: retrivalChain,
+		prompt: ({ originalInput }) => originalInput.prompt,
 	},
-
 	(prevResult) => {
 		console.log(prevResult);
 		return prevResult;
@@ -123,6 +83,47 @@ const chain = RunnableSequence.from([
 ]);
 
 const response = await chain.invoke({
-	prompt: "What are the laws for theft?",
+	prompt: "What are the laws for cheating case?",
 });
 console.log({ response });
+
+// const retrieverChain = RunnableSequence.from([
+// 	(prevResult) => {
+// 		// console.log(prevResult);
+// 		return prevResult.originalInput.prompt;
+// 	},
+// 	retriever,
+// 	(content) => content.map((content) => content.pageContent).join("\n\n"),
+// ]);
+
+// const chain = RunnableSequence.from([
+// 	(prevResult) => {
+// 		console.log(prevResult);
+// 		return prevResult;
+// 	},
+// 	{
+// 		originalInput: new RunnablePassthrough(),
+// 	},
+// 	(prevResult) => {
+// 		console.log(prevResult);
+// 		return prevResult;
+// 	},
+// 	{
+// 		context: retrieverChain,
+// 		prompt: ({ originalInput }) => {
+// 			// console.log(originalInput, originalInput.prompt);
+// 			return originalInput.prompt;
+// 		},
+// 	},
+
+// 	(prevResult) => {
+// 		console.log(prevResult);
+// 		return prevResult;
+// 	},
+// 	answerChain,
+// ]);
+
+// const response = await chain.invoke({
+// 	prompt: "What are the laws for false case?",
+// });
+// console.log({ response });
