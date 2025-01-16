@@ -10,8 +10,6 @@ const getContext = async (req, res) => {
 
 	try {
 		console.log(prompt);
-		console.log("GOOGLE_API_KEY", process.env.GOOGLE_API_KEY);
-
 		const embeddings = new GoogleGenerativeAIEmbeddings({
 			apiKey: process.env.GOOGLE_API_KEY,
 			model: "text-embedding-004", // 768 dimensions
