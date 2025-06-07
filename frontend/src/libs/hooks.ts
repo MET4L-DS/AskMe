@@ -10,19 +10,12 @@ import {
     setId,
 } from "../features/chat/chatSlice";
 import { setAllChats, updateIndividualChat } from "../features/main/mainSlice";
-import {
-    createGenerativeAI,
-    addChatsInFirestore,
-    updateChatsInFirestore,
-    safetySettings,
-} from "./utils";
+import { addChatsInFirestore, updateChatsInFirestore } from "./utils";
 import { Timestamp } from "firebase/firestore";
 
 export const useChat = () => {
     const dispatch = useDispatch();
     const BASE_URL = import.meta.env.VITE_BASE_URL;
-    const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-    const genAI = createGenerativeAI(API_KEY);
 
     const {
         prompt,
@@ -49,103 +42,96 @@ export const useChat = () => {
     };
 
     const textAndImagePromptRun = async () => {
-        const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
-        const images = [inlineImageData] as [InlineImageType];
-
-        dispatch(setIsLoading({ isLoading: true }));
-        try {
-            const result = await model.generateContent([prompt, ...images]);
-            const response = result.response;
-            dispatch(setIsLoading({ isLoading: false }));
-            printResponseText(response.text());
-        } catch (error) {
-            console.log(error);
-            dispatch(setIsLoading({ isLoading: false }));
-        }
+        // This functionality would need to be implemented separately
+        // as the current backend doesn't handle image processing
+        console.log("Image processing not yet implemented with new backend");
     };
 
     const getResponse = async () => {
-        const model = genAI.getGenerativeModel({
-            model: "gemini-1.5-flash",
-            safetySettings: safetySettings,
-        });
         let newChat: HistoryType[] = [
             { role: "user", parts: [{ text: prompt }] },
         ];
 
         dispatch(setCurrentChat({ currentChat: [...currentChat, ...newChat] }));
-
-        const chat = model.startChat({
-            history: [...currentChat],
-        });
-
         dispatch(setIsLoading({ isLoading: true }));
 
-        const url = `${BASE_URL}/api/v1/context`;
-        const axiosResponse = await axios.post(url, { prompt });
-        const contexts: ContextType[] = await axiosResponse.data.data;
-        const context = contexts
-            .map((context) => context.pageContent)
-            .join("\n\n");
-
-        console.log("CONTEXT : \n", context);
-
-        const promptWithContext = `
-        Answer the question by extracting relevant information on The Bharatiya Nyaya Sanhita (BNS) provided in the CONTEXT below. Highlight the Sections of The Bharatiya Nyaya Sanhita (BNS) that are applicable in your responses. Do not use the word 'context' in your responses. If the question is not related, just say "Question is irrelevant".
-
-        CONTEXT:${context}
-
-        QUESTION:${prompt}
-        `;
-
-        let chatText;
         try {
-            const result = await chat.sendMessage(promptWithContext);
-            chatText = result.response.text();
-        } catch (error: any) {
-            chatText = error?.response?.promptFeedback?.blockReason
-                ? "The response was blocked. Please try something else."
-                : "Something went wrong. Please try something else.";
-        }
+            const url = `${BASE_URL}/api/v1/context`;
+            const axiosResponse = await axios.post(url, { prompt });
 
-        dispatch(setIsLoading({ isLoading: false }));
-        newChat = [...newChat, { role: "model", parts: [{ text: "" }] }];
-        dispatch(setCurrentChat({ currentChat: [...currentChat, ...newChat] }));
+            if (axiosResponse.data.success) {
+                const responseText = axiosResponse.data.response;
 
-        printResponseText(chatText);
+                dispatch(setIsLoading({ isLoading: false }));
+                newChat = [
+                    ...newChat,
+                    { role: "model", parts: [{ text: "" }] },
+                ];
+                dispatch(
+                    setCurrentChat({
+                        currentChat: [...currentChat, ...newChat],
+                    }),
+                );
 
-        const updatedNewChat: HistoryType[] = [
-            { role: "user", parts: [{ text: prompt }] },
-            { role: "model", parts: [{ text: chatText }] },
-        ];
-        const updatedChat: HistoryType[] = [...currentChat, ...updatedNewChat];
+                printResponseText(responseText);
 
-        if (chatId) {
-            updateChatsInFirestore(updatedChat, chatId);
-            dispatch(
-                updateIndividualChat({
-                    id: chatId,
-                    chats: [...updatedChat],
-                    timestamp: new Date(Timestamp.now().toDate()).getTime(),
-                }),
-            );
-        } else if (userId) {
-            const chatDoc = await addChatsInFirestore(updatedChat, userId);
-            dispatch(
-                setAllChats({
-                    allChats: [
-                        ...allChats,
-                        {
-                            id: chatDoc?.id,
-                            chats: updatedChat,
+                const updatedNewChat: HistoryType[] = [
+                    { role: "user", parts: [{ text: prompt }] },
+                    { role: "model", parts: [{ text: responseText }] },
+                ];
+                const updatedChat: HistoryType[] = [
+                    ...currentChat,
+                    ...updatedNewChat,
+                ];
+
+                if (chatId) {
+                    updateChatsInFirestore(updatedChat, chatId);
+                    dispatch(
+                        updateIndividualChat({
+                            id: chatId,
+                            chats: [...updatedChat],
                             timestamp: new Date(
                                 Timestamp.now().toDate(),
                             ).getTime(),
-                        },
-                    ],
-                }),
+                        }),
+                    );
+                } else if (userId) {
+                    const chatDoc = await addChatsInFirestore(
+                        updatedChat,
+                        userId,
+                    );
+                    dispatch(
+                        setAllChats({
+                            allChats: [
+                                ...allChats,
+                                {
+                                    id: chatDoc?.id,
+                                    chats: updatedChat,
+                                    timestamp: new Date(
+                                        Timestamp.now().toDate(),
+                                    ).getTime(),
+                                },
+                            ],
+                        }),
+                    );
+                    dispatch(setId({ id: chatDoc?.id }));
+                }
+            } else {
+                throw new Error(
+                    axiosResponse.data.msg || "Unknown error occurred",
+                );
+            }
+        } catch (error: any) {
+            dispatch(setIsLoading({ isLoading: false }));
+            const errorText = error?.response?.data?.msg
+                ? `Error: ${error.response.data.msg}`
+                : "Something went wrong. Please try something else.";
+
+            newChat = [...newChat, { role: "model", parts: [{ text: "" }] }];
+            dispatch(
+                setCurrentChat({ currentChat: [...currentChat, ...newChat] }),
             );
-            dispatch(setId({ id: chatDoc?.id }));
+            printResponseText(errorText);
         }
     };
 

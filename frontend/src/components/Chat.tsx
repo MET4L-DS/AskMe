@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, ReactNode } from "react";
 import { GoLaw } from "react-icons/go";
 import { IconButton } from "./";
 import { useSelector } from "react-redux";
@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { RootType } from "../store";
 
 type ChatProps = {
-    children: string;
+    children: ReactNode;
     role: "user" | "model";
 };
 
@@ -29,8 +29,9 @@ const Chat = ({ children, role }: ChatProps) => {
                 </div>
                 <div
                     className={`rounded-2xl ${role === "user" ? "bg-white py-4" : " text-balance bg-customLightGreen py-8"} w-fit px-10 `}
-                    dangerouslySetInnerHTML={{ __html: children }}
-                ></div>
+                >
+                    {children}
+                </div>
             </div>
         </div>
     );

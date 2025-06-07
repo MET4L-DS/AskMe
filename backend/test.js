@@ -21,7 +21,7 @@ const standaloneQuestionPrompt = PromptTemplate.fromTemplate(
 // console.log({ standaloneQuestionPrompt });
 
 const promptWithContextTemplate = `
-Answer the question by extracting relevant information on The Bharatiya Nyaya Sanhita (BNS) provided in the CONTEXT below. Highlight the Sections of The Bharatiya Nyaya Sanhita (BNS) that are applicable in your responses. Do not use the word 'context' in your responses. If the question is not related, just say "Question is irrelevant".
+Answer the question by extracting relevant information on The Bharatiya Nyaya Sanhita (BNS) provided in the 'Context' below. Highlight the Sections of The Bharatiya Nyaya Sanhita (BNS) that are applicable in your responses. Do not use the word 'context' in your responses. Use suitable Markdown format of your responses. If the question is not related, just say "Question is irrelevant".
  
 Context: {context}
 Prompt: {prompt}
@@ -34,7 +34,7 @@ const promptWithContextPrompt = PromptTemplate.fromTemplate(
 
 const llm = new ChatGoogleGenerativeAI({
 	apiKey: process.env.GOOGLE_API_KEY,
-	model: "gemini-1.5-flash",
+	model: "gemini-2.0-flash",
 });
 
 const standaloneQuestionChain = RunnableSequence.from([
@@ -86,44 +86,3 @@ const response = await chain.invoke({
 	prompt: "What are the laws for cheating case?",
 });
 console.log({ response });
-
-// const retrieverChain = RunnableSequence.from([
-// 	(prevResult) => {
-// 		// console.log(prevResult);
-// 		return prevResult.originalInput.prompt;
-// 	},
-// 	retriever,
-// 	(content) => content.map((content) => content.pageContent).join("\n\n"),
-// ]);
-
-// const chain = RunnableSequence.from([
-// 	(prevResult) => {
-// 		console.log(prevResult);
-// 		return prevResult;
-// 	},
-// 	{
-// 		originalInput: new RunnablePassthrough(),
-// 	},
-// 	(prevResult) => {
-// 		console.log(prevResult);
-// 		return prevResult;
-// 	},
-// 	{
-// 		context: retrieverChain,
-// 		prompt: ({ originalInput }) => {
-// 			// console.log(originalInput, originalInput.prompt);
-// 			return originalInput.prompt;
-// 		},
-// 	},
-
-// 	(prevResult) => {
-// 		console.log(prevResult);
-// 		return prevResult;
-// 	},
-// 	answerChain,
-// ]);
-
-// const response = await chain.invoke({
-// 	prompt: "What are the laws for false case?",
-// });
-// console.log({ response });
