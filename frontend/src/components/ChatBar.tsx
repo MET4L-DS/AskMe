@@ -16,7 +16,7 @@ type CharBarProps = {
     getResponse: () => void;
 };
 
-const ChatBar = ({ textAndImagePromptRun, getResponse }: CharBarProps) => {
+const ChatBar = ({ getResponse }: CharBarProps) => {
     const { prompt, image } = useSelector((state: RootType) => state.chat!);
     const dispatch = useDispatch();
 
@@ -29,7 +29,7 @@ const ChatBar = ({ textAndImagePromptRun, getResponse }: CharBarProps) => {
         dispatch(setInlineImageData({ data: undefined }));
     };
 
-    const handleFileInput = (file: File) => {
+    const handleFileInput = () => {
         // Temporarily disabled until backend supports image processing
         console.log("Image processing temporarily disabled");
         return;
@@ -104,7 +104,7 @@ const ChatBar = ({ textAndImagePromptRun, getResponse }: CharBarProps) => {
                     onChange={(e) => {
                         if (e.target.files && e.target.files[0]) {
                             console.log(e.target.files[0]);
-                            handleFileInput(e.target.files[0]);
+                            handleFileInput();
                         }
                     }}
                     className="hidden"

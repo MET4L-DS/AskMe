@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { RootType } from "../store";
-import { ContextType, HistoryType, InlineImageType } from "../types";
+import { HistoryType } from "../types";
 import {
     setLastChatText,
     setIsLoading,
@@ -21,7 +21,6 @@ export const useChat = () => {
         prompt,
         id: chatId,
         currentChat,
-        inlineImageData,
     } = useSelector((state: RootType) => state.chat!);
 
     const { id: userId } = useSelector((state: RootType) => state.user!);
