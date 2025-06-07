@@ -21,8 +21,8 @@ const ChatBar = ({ textAndImagePromptRun, getResponse }: CharBarProps) => {
     const dispatch = useDispatch();
 
     const handleInput = () => {
-        if (image) console.log("image is set");
-        image ? textAndImagePromptRun() : getResponse();
+        // For now, only use text responses since backend doesn't handle images yet
+        getResponse();
 
         dispatch(setPrompt({ prompt: "" }));
         dispatch(setImage({ image: undefined }));
@@ -30,24 +30,28 @@ const ChatBar = ({ textAndImagePromptRun, getResponse }: CharBarProps) => {
     };
 
     const handleFileInput = (file: File) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => {
-            if (reader.result !== null) {
-                const base64Img = reader.result as string;
-                dispatch(setImage({ image: base64Img }));
-                dispatch(
-                    setInlineImageData({
-                        data: {
-                            inlineData: {
-                                data: base64Img.split(",")[1],
-                                mimeType: file.type,
-                            },
-                        },
-                    }),
-                );
-            }
-        };
+        // Temporarily disabled until backend supports image processing
+        console.log("Image processing temporarily disabled");
+        return;
+
+        // const reader = new FileReader();
+        // reader.readAsDataURL(file);
+        // reader.onload = () => {
+        //     if (reader.result !== null) {
+        //         const base64Img = reader.result as string;
+        //         dispatch(setImage({ image: base64Img }));
+        //         dispatch(
+        //             setInlineImageData({
+        //                 data: {
+        //                     inlineData: {
+        //                         data: base64Img.split(",")[1],
+        //                         mimeType: file.type,
+        //                     },
+        //                 },
+        //             }),
+        //         );
+        //     }
+        // };
     };
 
     return (
@@ -85,7 +89,8 @@ const ChatBar = ({ textAndImagePromptRun, getResponse }: CharBarProps) => {
                     />
                     <label
                         htmlFor="image"
-                        className="absolute right-0 grid h-full place-items-center rounded-2xl bg-white px-4  hover:text-customGreen active:bg-customGreen active:text-white"
+                        className="absolute right-0 grid h-full cursor-not-allowed place-items-center rounded-2xl bg-white px-4 opacity-50"
+                        title="Image processing temporarily disabled"
                     >
                         <BiImageAdd size={24} />
                     </label>
@@ -102,7 +107,8 @@ const ChatBar = ({ textAndImagePromptRun, getResponse }: CharBarProps) => {
                             handleFileInput(e.target.files[0]);
                         }
                     }}
-                    className=" hidden"
+                    className="hidden"
+                    disabled
                 />
 
                 <motion.button

@@ -1,14 +1,9 @@
 import { IoChatbubble, IoFilter } from "react-icons/io5";
 
-import {
-    FaPlus,
-    FaBookmark,
-    FaMagnifyingGlass,
-    FaPenFancy,
-} from "react-icons/fa6";
+import { FaPlus, FaBookmark, FaMagnifyingGlass } from "react-icons/fa6";
 import { HiDotsHorizontal } from "react-icons/hi";
 
-import { IconButton, Iconbar } from "./";
+import { IconButton, Iconbar, SidebarChatItem } from "./";
 
 import { db } from "../configs/firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
@@ -20,7 +15,7 @@ import {
     setCurrentChat,
     setIsLoading,
 } from "../features/chat/chatSlice";
-import { memo, useEffect } from "react";
+import { memo, useEffect, useState } from "react";
 
 import { motion } from "framer-motion";
 
@@ -32,6 +27,8 @@ const Sidebar = () => {
 
     const historyCollectionRef = collection(db, "chat_histories");
 
+    const [saved, setSaved] = useState(false);
+
     const getData = async () => {
         try {
             const q = query(
@@ -39,23 +36,26 @@ const Sidebar = () => {
                 where("userId", "==", userId),
             );
             const docSnap = await getDocs(q);
-            // const data = docSnap.docs.map((doc) => doc.data());
-            // const newVar = docSnap.docs.map((doc) => {
-            //     const chatId = doc.id;
-            //     const chatData = doc.data();
-            //     const chats = chatData.chats;
-            //     return { chatId, chats };
-            // });
-            // console.log(newVar);
 
             const chatHistory = docSnap.docs.map((doc) => {
                 const chatId = doc.id;
                 const chatData = doc.data();
                 const prevChats = chatData.chats;
-                return { id: chatId, chats: prevChats };
+                const createdAt = new Date(
+                    chatData.createdAt.toDate(),
+                ).getTime();
+
+                return {
+                    id: chatId,
+                    chats: prevChats,
+                    timestamp: createdAt,
+                    saved: chatData.saved,
+                };
             });
 
             if (docSnap) {
+                console.log(chatHistory);
+
                 dispatch(setAllChats({ allChats: chatHistory }));
             } else {
                 // doc.data() will be undefined in this case
@@ -98,26 +98,58 @@ const Sidebar = () => {
                 </div>
                 <div className="flex flex-wrap gap-4 rounded-lg bg-customNeutral p-1 *:rounded *:p-3 *:text-xs *:font-bold *:uppercase">
                     <motion.button
-                        whileHover={{ backgroundColor: " hsl(263, 52%, 91%)" }}
+                        // whileHover={{ backgroundColor: " hsl(263, 52%, 91%)" }}
                         whileTap={{ scale: 0.98 }}
-                        className=" flex flex-grow items-center justify-center gap-1 bg-white text-customGreen"
+                        className={` relative flex flex-grow items-center justify-center gap-1 ${saved == false ? " text-customGreen " : ""}`}
                         type="button"
+                        onClick={() => {
+                            setSaved(false);
+                        }}
                     >
-                        <IoChatbubble />
-                        <span onClick={() => console.log(allChats)}>Chats</span>
-                        <span className=" rounded bg-customLightGreen px-1">
+                        {saved === false && (
+                            <motion.div
+                                layoutId="active-section"
+                                className=" absolute left-0 top-0 h-full w-full rounded-lg bg-white"
+                            />
+                        )}
+                        <IoChatbubble className=" z-10" />
+                        <span
+                            onClick={() => console.log(allChats)}
+                            className="z-10"
+                        >
+                            Chats
+                        </span>
+                        <span
+                            className={` z-10 rounded ${saved == false ? "bg-customLightGreen" : "bg-customGray"} px-1`}
+                        >
                             {allChats.length}
                         </span>
                     </motion.button>
                     <motion.button
-                        whileHover={{ backgroundColor: " hsl(263, 52%, 91%)" }}
+                        // whileHover={{ backgroundColor: " hsl(263, 52%, 91%)" }}
                         whileTap={{ scale: 0.98 }}
-                        className=" flex flex-grow items-center justify-center gap-1"
+                        className={` relative flex flex-grow items-center justify-center gap-1 ${saved == true ? " text-customGreen " : ""}`}
                         type="button"
+                        onClick={() => {
+                            setSaved(true);
+                        }}
                     >
-                        <FaBookmark />
-                        <span>Saved</span>
-                        <span className=" rounded bg-customGray px-1">24</span>
+                        {saved === true && (
+                            <motion.div
+                                layoutId="active-section"
+                                className=" absolute left-0 top-0 h-full w-full rounded-lg bg-white"
+                            />
+                        )}
+                        <FaBookmark className=" z-10" />
+                        <span className="z-10">Saved</span>
+                        <span
+                            className={` z-10 rounded ${saved == true ? "bg-customLightGreen" : "bg-customGray"} px-1`}
+                        >
+                            {
+                                allChats.filter((chat) => chat.saved == true)
+                                    .length
+                            }
+                        </span>
                     </motion.button>
                 </div>
                 <div className="flex gap-2">
@@ -144,59 +176,19 @@ const Sidebar = () => {
                 </div>
                 <div className=" no-scrollbar flex flex-grow flex-col gap-2 overflow-y-scroll">
                     {allChats?.map((chat, index) => {
+                        if (saved && chat.saved == false) {
+                            return;
+                        }
                         return (
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{
-                                    opacity: 1,
-                                    transition: {
-                                        duration: 0.5,
-                                        delay: index * 0.1,
-                                    },
-                                }}
-                                whileHover={{
-                                    backgroundColor: " hsl(263, 52%, 91%)",
-                                    transition: { duration: 0.2 },
-                                }}
-                                whileTap={{ scale: 0.98 }}
+                            <SidebarChatItem
                                 key={chat.id}
-                                className={`history-item-template relative grid gap-y-2 ${chat.id === currentChatId ? "" : ""} rounded-lg py-2 pr-4`}
-                                onClick={() => {
-                                    dispatch(setId({ id: chat.id }));
-                                    dispatch(
-                                        setCurrentChat({
-                                            currentChat: chat.chats,
-                                        }),
-                                    );
-                                }}
-                            >
-                                {chat.id === currentChatId && (
-                                    <motion.div
-                                        layoutId="active-chat"
-                                        className=" absolute left-0 top-0 h-full w-1 bg-customGreen"
-                                    />
-                                )}
-                                <div
-                                    className={` col-[1/2] flex items-center justify-center text-sm  ${chat.id === currentChatId ? "text-customGreen" : "text-customDark400"}`}
-                                >
-                                    <FaPenFancy />
-                                </div>
-                                <motion.h3
-                                    className={` col-[2/3] line-clamp-1 font-bold ${chat.id === currentChatId ? "text-customGreen" : " text-customDark400"}`}
-                                >
-                                    {chat.chats[0].parts[0].text}
-                                </motion.h3>
-                                <span
-                                    className={`col-[3/4] flex items-center justify-end text-xs font-bold  ${chat.id === currentChatId ? "text-customAccent" : "text-customGray"}`}
-                                >
-                                    9:34 PM
-                                </span>
-                                <p
-                                    className={`col-[2/-1] line-clamp-3 text-justify text-sm  ${chat.id === currentChatId ? "text-customGreen" : "text-customDark200"}`}
-                                >
-                                    {chat.chats[1].parts[0].text}
-                                </p>
-                            </motion.div>
+                                id={chat.id}
+                                chats={chat.chats}
+                                currentChatId={currentChatId}
+                                timestamp={chat.timestamp}
+                                index={index}
+                                saved={chat.saved}
+                            />
                         );
                     })}
                 </div>
