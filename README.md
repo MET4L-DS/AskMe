@@ -1,7 +1,8 @@
-# JUSTIFIED
-![justified](https://github.com/user-attachments/assets/53151992-d665-4d5f-a6b8-663834b58272)
+# LawGPT
 
-JUSTIFIED is a comprehensive tool designed to provide legal advice based on Indian laws and the Indian Penal Code (IPC). This project simulates a virtual lawyer, offering guidance and insights into various legal scenarios, helping users navigate through legal complexities with ease.
+![LawGPT](https://github.com/user-attachments/assets/53151992-d665-4d5f-a6b8-663834b58272)
+
+LawGPT is a comprehensive tool designed to provide legal advice based on Indian laws and the Indian Penal Code (IPC). This project simulates a virtual lawyer, offering guidance and insights into various legal scenarios, helping users navigate through legal complexities with ease.
 
 ## Table of Contents
 
@@ -16,7 +17,7 @@ JUSTIFIED is a comprehensive tool designed to provide legal advice based on Indi
 
 ## Introduction
 
-JUSTIFIED is an AI-powered platform that provides legal advice grounded in Indian legal statutes, including the Indian Penal Code. It is designed to assist users by simulating a consultation with a lawyer, offering interpretations, potential legal outcomes, and procedural guidance on various legal matters.
+LawGPT is an AI-powered platform that provides legal advice grounded in Indian legal statutes, including the Indian Penal Code. It is designed to assist users by simulating a consultation with a lawyer, offering interpretations, potential legal outcomes, and procedural guidance on various legal matters.
 
 ## Features
 
@@ -27,7 +28,7 @@ JUSTIFIED is an AI-powered platform that provides legal advice grounded in India
 
 ## Installation
 
-To install and set up JUSTIFIED, follow these steps:
+To install and set up LawGPT, follow these steps:
 
 1. **Clone the repository:**
 
@@ -38,7 +39,7 @@ To install and set up JUSTIFIED, follow these steps:
 
 ## Usage
 
-After setting up the environment and installing the dependencies, you can start using JUSTIFIED as follows:
+After setting up the environment and installing the dependencies, you can start using LawGPT as follows:
 
 1. **Installing the dependencies**
 
@@ -59,13 +60,13 @@ After setting up the environment and installing the dependencies, you can start 
 
 ## Data Sources
 
-JUSTIFIED relies on authoritative legal texts and databases, including:
+LawGPT relies on authoritative legal texts and databases, including:
 
 -   The Indian Penal Code (IPC)
 
 ## Contributing
 
-We welcome contributions to enhance JUSTIFIED! To contribute:
+We welcome contributions to enhance LawGPT! To contribute:
 
 1. Fork the repository
 2. Create a new branch
@@ -101,9 +102,11 @@ For any questions or feedback, please reach out to us at:
 -   Email: tomdevsikdar@gmail.com, parijatbhatt1@gmail.com
 
 ## Media
+
 ![Screenshot (40)](https://github.com/MET4L-DS/AskMe/assets/73418468/5a4b0e9c-c007-49b4-be92-cdfce219b7ee)
 ![Screenshot (41)](https://github.com/MET4L-DS/AskMe/assets/73418468/9359da3e-0f07-4b21-a9e7-7f9dace6e357)
 ![Screenshot (43)](https://github.com/MET4L-DS/AskMe/assets/73418468/e4c2ba05-3a9c-47bf-821a-320b0e7fd877)
 
 ## Video
+
 https://github.com/user-attachments/assets/75a66a82-c61e-4111-91eb-ac8a82dd2a01
