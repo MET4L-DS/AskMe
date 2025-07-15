@@ -2,7 +2,7 @@
 
 ![LawGPT](https://github.com/user-attachments/assets/53151992-d665-4d5f-a6b8-663834b58272)
 
-LawGPT is a comprehensive tool designed to provide legal advice based on Indian laws and the Indian Penal Code (IPC). This project simulates a virtual lawyer, offering guidance and insights into various legal scenarios, helping users navigate through legal complexities with ease.
+LawGPT is a comprehensive tool designed to provide legal advice based on Indian laws and the Bharatiya Nyaya Sanhita (BNS). This project simulates a virtual lawyer, offering guidance and insights into various legal scenarios, helping users navigate through legal complexities with ease.
 
 ## Table of Contents
 
@@ -17,11 +17,11 @@ LawGPT is a comprehensive tool designed to provide legal advice based on Indian 
 
 ## Introduction
 
-LawGPT is an AI-powered platform that provides legal advice grounded in Indian legal statutes, including the Indian Penal Code. It is designed to assist users by simulating a consultation with a lawyer, offering interpretations, potential legal outcomes, and procedural guidance on various legal matters.
+LawGPT is an AI-powered platform that provides legal advice grounded in Indian legal statutes, including the Bharatiya Nyaya Sanhita. It is designed to assist users by simulating a consultation with a lawyer, offering interpretations, potential legal outcomes, and procedural guidance on various legal matters.
 
 ## Features
 
--   **Legal Consultation:** Provides advice on legal matters based on the Indian Penal Code and other relevant laws.
+-   **Legal Consultation:** Provides advice on legal matters based on the Bharatiya Nyaya Sanhita and other relevant laws.
 -   **Scenario Analysis:** Analyzes user-provided scenarios and offers legal interpretations and potential consequences.
 -   **User-Friendly Interface:** Easy-to-use interface for non-technical users seeking legal guidance.
 -   **Comprehensive Coverage:** Covers a wide range of legal issues including civil, criminal, family, and corporate law.
@@ -62,7 +62,7 @@ After setting up the environment and installing the dependencies, you can start 
 
 LawGPT relies on authoritative legal texts and databases, including:
 
--   The Indian Penal Code (IPC)
+-   The Bharatiya Nyaya Sanhita (BNS)
 
 ## Contributing
 
